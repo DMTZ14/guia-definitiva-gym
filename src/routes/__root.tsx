@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Guía definitiva Gym" },
+      { name: "description", content: "Empieza en el gym con claridad: rutina de 4 días, objetivos, progresión y errores comunes. Descarga inmediata por $129 MXN." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Guía definitiva Gym" },
+      { property: "og:description", content: "Empieza en el gym con claridad: rutina de 4 días, objetivos, progresión y errores comunes. Descarga inmediata por $129 MXN." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Guía definitiva Gym" },
+      { name: "twitter:description", content: "Empieza en el gym con claridad: rutina de 4 días, objetivos, progresión y errores comunes. Descarga inmediata por $129 MXN." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f5f05988-8f2e-4077-97a6-7390e838b136/id-preview-5757f0ec--bcb6ca40-75b5-4d1c-b23c-a8cb8d8325cc.lovable.app-1781052236629.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f5f05988-8f2e-4077-97a6-7390e838b136/id-preview-5757f0ec--bcb6ca40-75b5-4d1c-b23c-a8cb8d8325cc.lovable.app-1781052236629.png" },
     ],
     links: [
       {
