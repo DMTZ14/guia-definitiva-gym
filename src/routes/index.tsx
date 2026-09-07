@@ -1,6 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
+/* ── Variables fáciles de editar ───────────────────────────── */
+const PRICE = '129';
+const CURRENCY = 'MXN';
+const CHECKOUT_URL = 'https://niwi.gumroad.com/l/guia-gym-principiantes';
+const CONTACT_EMAIL = 'hola@esencialgym.com';
+
 const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -31,7 +37,6 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     overflow-x: hidden;
   }
 
-  /* NOISE TEXTURE */
   body::before {
     content: '';
     position: fixed;
@@ -42,7 +47,6 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     opacity: 0.4;
   }
 
-  /* GRID LINES */
   body::after {
     content: '';
     position: fixed;
@@ -55,17 +59,19 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     z-index: 0;
   }
 
-  .wrapper { position: relative; z-index: 1; }
+  .wrapper { position: relative; z-index: 1; padding-bottom: 76px; }
+  @media (min-width: 760px) { .wrapper { padding-bottom: 0; } }
 
   /* NAV */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    padding: 16px 24px;
+    padding: 12px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     background: rgba(10,10,11,0.85);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
@@ -74,8 +80,17 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
   .nav-logo {
     font-family: var(--font-display);
     font-size: 20px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.07em;
     color: var(--teal);
+    line-height: 1;
+  }
+
+  .nav-tag {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray2);
+    margin-top: 3px;
   }
 
   .nav-cta {
@@ -84,40 +99,85 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     font-family: var(--font-body);
     font-size: 13px;
     font-weight: 500;
-    padding: 8px 18px;
+    padding: 9px 16px;
     border-radius: 4px;
     text-decoration: none;
     transition: opacity 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
   }
   .nav-cta:hover { opacity: 0.85; }
+  .nav-cta span { font-size: 11px; opacity: 0.7; }
+
+  /* SECTIONS */
+  .sec {
+    padding: 56px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  @media (min-width: 760px) { .sec { padding: 72px 24px; } }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--teal);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 7vw, 60px);
+    line-height: 0.98;
+    letter-spacing: 0.01em;
+    margin-bottom: 12px;
+  }
+  .section-title .teal { color: var(--teal); }
+
+  .section-intro {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 620px;
+  }
 
   /* HERO */
   .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 120px 24px 80px;
+    padding: 108px 20px 48px;
     max-width: 900px;
     margin: 0 auto;
-    position: relative;
   }
+  @media (min-width: 760px) { .hero { padding: 140px 24px 64px; } }
 
   .hero-eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--teal);
-    margin-bottom: 24px;
+    margin-bottom: 18px;
     opacity: 0;
     animation: fadeUp 0.6s ease forwards;
     animation-delay: 0.1s;
   }
-
   .hero-eyebrow::before {
     content: '';
     display: block;
@@ -128,52 +188,46 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
 
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(64px, 10vw, 120px);
-    line-height: 0.92;
+    font-size: clamp(52px, 13vw, 108px);
+    line-height: 0.9;
     letter-spacing: 0.01em;
     color: var(--white);
-    margin-bottom: 12px;
+    margin-bottom: 18px;
     opacity: 0;
     animation: fadeUp 0.7s ease forwards;
     animation-delay: 0.2s;
   }
-
-  .hero-title .accent {
-    color: var(--teal);
-    display: block;
-  }
-
-  .hero-subtitle {
-    font-family: var(--font-display);
-    font-size: clamp(32px, 5vw, 56px);
-    line-height: 1;
-    letter-spacing: 0.04em;
-    color: var(--gray);
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.7s ease forwards;
-    animation-delay: 0.3s;
-  }
+  .hero-title span { display: block; }
+  .hero-title .accent { color: var(--teal); }
 
   .hero-desc {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 300;
     color: var(--gray);
     max-width: 560px;
-    margin-bottom: 48px;
-    line-height: 1.7;
+    margin-bottom: 10px;
+    line-height: 1.65;
     opacity: 0;
     animation: fadeUp 0.7s ease forwards;
-    animation-delay: 0.4s;
+    animation-delay: 0.35s;
   }
-
   .hero-desc strong { color: var(--white); font-weight: 500; }
+
+  .hero-desc-sm {
+    font-size: 13px;
+    color: var(--gray2);
+    max-width: 520px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 0.42s;
+  }
 
   .hero-cta-group {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
     opacity: 0;
     animation: fadeUp 0.7s ease forwards;
     animation-delay: 0.5s;
@@ -185,7 +239,7 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     font-family: var(--font-body);
     font-size: 15px;
     font-weight: 500;
-    padding: 16px 36px;
+    padding: 15px 28px;
     border-radius: 4px;
     text-decoration: none;
     display: inline-flex;
@@ -195,601 +249,425 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     border: none;
     cursor: pointer;
   }
-  .btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-  .btn-primary .arrow { font-size: 18px; transition: transform 0.2s; }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-primary .arrow { transition: transform 0.2s; }
   .btn-primary:hover .arrow { transform: translateX(3px); }
 
-  .price-display {
+  .price-note { font-size: 12px; color: var(--gray); letter-spacing: 0.04em; }
+
+  .trust-mini {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 26px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 0.6s;
   }
-  .price-amount {
-    font-family: var(--font-display);
-    font-size: 36px;
-    color: var(--white);
-    line-height: 1;
-  }
-  .price-note {
+  .trust-mini span {
     font-size: 12px;
     color: var(--gray);
-    margin-top: 2px;
-  }
-
-  .hero-scroll-hint {
-    position: absolute;
-    bottom: 32px;
-    left: 24px;
-    display: flex;
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 5px 12px;
+    display: inline-flex;
+    gap: 6px;
     align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--gray2);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards;
-    animation-delay: 1s;
+  }
+  .trust-mini span::before { content: '✓'; color: var(--teal); font-size: 11px; }
+
+  /* GENERIC CARD GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
+  @media (min-width: 640px) {
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
   }
 
-  .scroll-line {
-    width: 40px;
-    height: 1px;
-    background: var(--gray2);
-    position: relative;
-    overflow: hidden;
-  }
-  .scroll-line::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: var(--teal);
-    animation: slideLine 2s ease infinite;
-    animation-delay: 1.5s;
-  }
-
-  /* BOOK PREVIEW */
-  .book-section {
-    padding: 60px 24px 80px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .pages-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    margin-top: 32px;
-  }
-
-  .page-card {
+  .card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 8px;
-    aspect-ratio: 3/4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding: 20px;
-    gap: 12px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-    cursor: default;
+    transition: border-color 0.25s, background 0.25s, transform 0.25s;
   }
-  .page-card:hover {
-    border-color: var(--border2);
-    transform: translateY(-4px);
-  }
+  .card:hover { border-color: var(--border2); background: var(--card2); }
 
-  .page-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--teal);
-    transform: scaleX(0);
-    transition: transform 0.3s;
-    transform-origin: left;
-  }
-  .page-card:hover::before { transform: scaleX(1); }
-
-  .page-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--teal-dim);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-  }
-
-  .page-label {
+  .card h4 {
     font-family: var(--font-display);
-    font-size: 16px;
+    font-size: 18px;
     letter-spacing: 0.05em;
-    text-align: center;
     color: var(--white);
-    line-height: 1.2;
+    margin-bottom: 6px;
+    line-height: 1.1;
   }
+  .card p { font-size: 13px; color: var(--gray); font-weight: 300; line-height: 1.55; }
 
-  .page-desc {
-    font-size: 11px;
-    color: var(--gray);
-    text-align: center;
-    line-height: 1.4;
-  }
-
-  .page-num {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    font-size: 10px;
-    color: var(--gray2);
-    font-weight: 500;
-    letter-spacing: 0.06em;
-  }
-
-  /* SECTION TITLE */
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--teal);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .card-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: var(--teal-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
     margin-bottom: 12px;
   }
-  .section-label::before {
-    content: '';
+
+  .card-num {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--teal);
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
     display: block;
-    width: 20px;
-    height: 1px;
-    background: var(--teal);
   }
 
-  .section-title {
+  .badge-soon {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* HIGHLIGHT LINE */
+  .highlight {
+    margin-top: 28px;
     font-family: var(--font-display);
-    font-size: clamp(40px, 6vw, 72px);
-    line-height: 0.95;
-    letter-spacing: 0.01em;
-    margin-bottom: 16px;
+    font-size: clamp(26px, 5vw, 42px);
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .highlight .teal { color: var(--teal); display: block; }
+
+  .note-text {
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-top: 22px;
+    max-width: 620px;
+  }
+  .note-text strong { color: var(--white); font-weight: 500; }
+
+  /* PREVIEW SLIDER */
+  .preview-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 28px 20px 8px;
+    margin: 0 -20px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .preview-track::-webkit-scrollbar { height: 4px; }
+  .preview-track::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  .preview-item {
+    scroll-snap-align: start;
+    flex: 0 0 190px;
+  }
+  @media (min-width: 760px) { .preview-item { flex: 0 0 220px; } }
+
+  .preview-frame {
+    aspect-ratio: 3/4;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .preview-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 55%, rgba(10,10,11,0.85) 100%);
+    pointer-events: none;
+  }
+  .pv-tag {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 2px;
+  }
+  .pv-h {
+    font-family: var(--font-display);
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .pv-line { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); }
+  .pv-line.s { width: 55%; }
+  .pv-line.m { width: 78%; }
+  .pv-row { display: flex; gap: 5px; }
+  .pv-row .pv-line { flex: 1; }
+  .pv-cell { height: 14px; border-radius: 3px; background: rgba(255,255,255,0.05); flex: 1; }
+  .pv-cell.on { background: var(--teal-dim); }
+
+  .preview-caption {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .preview-disclaimer {
+    font-size: 11px;
+    color: var(--gray2);
+    margin-top: 10px;
   }
 
   /* BENEFITS */
-  .benefits-section {
-    padding: 80px 24px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
   .benefits-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2px;
-    margin-top: 48px;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    margin-top: 28px;
     border: 1px solid var(--border);
     border-radius: 8px;
     overflow: hidden;
+    background: var(--border);
   }
+  @media (min-width: 700px) { .benefits-grid { grid-template-columns: 1fr 1fr; } }
 
   .benefit-item {
-    padding: 28px 24px;
+    padding: 22px 20px;
     background: var(--card);
     display: flex;
-    gap: 16px;
+    gap: 14px;
     align-items: flex-start;
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
     transition: background 0.2s;
   }
   .benefit-item:hover { background: var(--card2); }
 
   .benefit-check {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
+    width: 22px; height: 22px; min-width: 22px;
     border-radius: 50%;
     background: var(--teal-dim);
     border: 1px solid var(--teal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     margin-top: 2px;
   }
-  .benefit-check svg { width: 12px; height: 12px; color: var(--teal); }
+  .benefit-check svg { width: 11px; height: 11px; color: var(--teal); }
+  .benefit-text h4 { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+  .benefit-text p { font-size: 13px; color: var(--gray); line-height: 1.5; font-weight: 300; }
 
-  .benefit-text h4 {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--white);
-    margin-bottom: 4px;
-  }
-  .benefit-text p {
-    font-size: 13px;
-    color: var(--gray);
-    line-height: 1.5;
-    font-weight: 300;
-  }
-
-  /* FOR WHO */
-  .forwho-section {
-    padding: 80px 24px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .forwho-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 40px;
-  }
-
-  @media (max-width: 600px) {
-    .forwho-grid { grid-template-columns: 1fr; }
-  }
-
-  .forwho-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 24px;
-  }
-
-  .forwho-card.yes { border-color: rgba(62,207,178,0.2); }
-  .forwho-card.no { border-color: rgba(255,80,80,0.15); }
-
-  .forwho-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-
-  .forwho-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-  }
-  .yes .forwho-dot { background: var(--teal); }
-  .no .forwho-dot { background: #ff5050; }
-
-  .forwho-title {
-    font-family: var(--font-display);
-    font-size: 20px;
-    letter-spacing: 0.04em;
-  }
-  .yes .forwho-title { color: var(--teal); }
-  .no .forwho-title { color: #ff5050; }
-
-  .forwho-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .forwho-list li {
-    font-size: 13px;
-    color: var(--gray);
-    font-weight: 300;
-    padding-left: 14px;
-    position: relative;
-    line-height: 1.5;
-  }
-  .forwho-list li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--gray2);
-    font-size: 12px;
-  }
-
-  /* QUOTE SECTION */
+  /* QUOTE */
   .quote-section {
-    padding: 80px 24px;
+    padding: 64px 20px;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     text-align: center;
     position: relative;
     overflow: hidden;
   }
-
   .quote-bg {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: radial-gradient(ellipse at center, rgba(62,207,178,0.05) 0%, transparent 70%);
     pointer-events: none;
   }
-
   .quote-text {
     font-family: var(--font-display);
-    font-size: clamp(36px, 6vw, 72px);
-    line-height: 1.05;
+    font-size: clamp(32px, 6.5vw, 64px);
+    line-height: 1.02;
     letter-spacing: 0.01em;
     max-width: 800px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
   }
-
   .quote-text .line1 { color: var(--white); display: block; }
   .quote-text .line2 { color: var(--teal); display: block; }
   .quote-text .line3 { color: var(--gray); display: block; }
-
-  /* ABOUT */
-  .about-section {
-    padding: 80px 24px;
-    max-width: 900px;
-    margin: 0 auto;
+  .quote-sub {
+    position: relative; z-index: 1;
+    margin: 20px auto 0;
+    max-width: 520px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
   }
 
-  .about-inner {
-    display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 48px;
-    align-items: start;
-    margin-top: 40px;
-  }
-
-  @media (max-width: 640px) {
-    .about-inner { grid-template-columns: 1fr; gap: 24px; }
-  }
-
-  .about-avatar {
-    aspect-ratio: 3/4;
+  /* FOR WHO */
+  .forwho-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
+    padding: 22px;
+  }
+  .forwho-card.yes { border-color: rgba(62,207,178,0.2); }
+  .forwho-card.no { border-color: rgba(255,80,80,0.15); }
+  .forwho-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .forwho-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .yes .forwho-dot { background: var(--teal); }
+  .no .forwho-dot { background: #ff5050; }
+  .forwho-title { font-family: var(--font-display); font-size: 19px; letter-spacing: 0.05em; }
+  .yes .forwho-title { color: var(--teal); }
+  .no .forwho-title { color: #ff5050; }
+  .forwho-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .forwho-list li {
+    font-size: 13px; color: var(--gray); font-weight: 300;
+    padding-left: 14px; position: relative; line-height: 1.5;
+  }
+  .forwho-list li::before {
+    content: '—'; position: absolute; left: 0; color: var(--gray2); font-size: 12px;
   }
 
-  .avatar-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    color: var(--gray2);
-  }
-
-  .avatar-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: var(--card2);
-    border: 1px solid var(--border2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-  }
-
-  .avatar-note {
-    font-size: 11px;
-    color: var(--gray2);
-    text-align: center;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    max-width: 120px;
-    line-height: 1.4;
-  }
-
-  .about-corner {
-    position: absolute;
-    top: 12px; right: 12px;
-    background: var(--teal-dim);
-    border: 1px solid rgba(62,207,178,0.3);
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 10px;
-    color: var(--teal);
-    letter-spacing: 0.08em;
-    font-weight: 500;
-  }
-
-  .about-content h3 {
-    font-family: var(--font-display);
-    font-size: 40px;
-    letter-spacing: 0.02em;
-    margin-bottom: 16px;
-    line-height: 1;
-  }
-
-  .about-content p {
-    font-size: 15px;
-    color: var(--gray);
-    font-weight: 300;
-    line-height: 1.75;
-    margin-bottom: 16px;
-  }
-
-  .about-content p strong { color: var(--white); font-weight: 500; }
-
-  .about-content p em { font-style: italic; color: var(--teal); }
-
-  .about-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 24px;
-  }
-
-  .about-tag {
+  /* TRUST BADGES */
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .badges span {
     border: 1px solid var(--border2);
     border-radius: 20px;
     padding: 5px 12px;
     font-size: 12px;
     color: var(--gray);
-    font-weight: 400;
   }
 
-  /* CTA SECTION */
-  .cta-section {
-    padding: 100px 24px;
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .cta-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--teal-dim);
-    border: 1px solid rgba(62,207,178,0.25);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 12px;
+  .link-teal {
     color: var(--teal);
-    font-weight: 500;
-    margin-bottom: 24px;
-    letter-spacing: 0.04em;
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(62,207,178,0.35);
+    display: inline-block;
+    margin-top: 20px;
   }
+  .link-teal:hover { border-color: var(--teal); }
 
-  .cta-title {
+  /* RATING */
+  .rating-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-top: 22px; flex-wrap: wrap;
+  }
+  .rating-score {
     font-family: var(--font-display);
-    font-size: clamp(52px, 8vw, 88px);
-    line-height: 0.95;
-    letter-spacing: 0.01em;
-    margin-bottom: 20px;
+    font-size: 34px; line-height: 1; color: var(--white);
+  }
+  .stars { color: var(--teal); letter-spacing: 2px; font-size: 15px; }
+  .rating-note { font-size: 12px; color: var(--gray2); }
+
+  .t-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .t-card p { font-size: 14px; color: var(--white); font-weight: 300; line-height: 1.6; }
+  .t-card .t-label { font-size: 11px; color: var(--gray2); margin-top: 14px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .t-stars { color: var(--teal); font-size: 12px; letter-spacing: 2px; margin-bottom: 10px; }
+
+  /* FAQ */
+  .faq-list { margin-top: 26px; border-top: 1px solid var(--border); }
+  details.faq {
+    border-bottom: 1px solid var(--border);
+  }
+  details.faq summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 32px 16px 0;
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 17px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after {
+    content: '+';
+    position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    color: var(--teal); font-size: 18px; font-family: var(--font-body);
+  }
+  details.faq[open] summary::after { content: '−'; }
+  details.faq p {
+    font-size: 14px; color: var(--gray); font-weight: 300;
+    line-height: 1.7; padding: 0 8px 18px 0;
   }
 
-  .cta-title .teal { color: var(--teal); }
-
-  .cta-desc {
-    font-size: 16px;
-    font-weight: 300;
-    color: var(--gray);
-    max-width: 480px;
-    margin: 0 auto 40px;
-    line-height: 1.7;
-  }
-
-  .cta-box {
+  /* PRICE */
+  .price-box {
     background: var(--card);
     border: 1px solid var(--border2);
     border-radius: 12px;
-    padding: 32px;
-    margin-bottom: 16px;
+    padding: 26px 22px;
+    margin-top: 26px;
   }
+  .price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .price-main { font-family: var(--font-display); font-size: 56px; line-height: 1; color: var(--white); }
+  .price-cur { font-size: 13px; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; }
+  .price-sub { font-size: 13px; color: var(--teal); margin-bottom: 20px; }
 
-  .cta-price-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  .cta-price-main {
-    font-family: var(--font-display);
-    font-size: 64px;
-    color: var(--white);
-    line-height: 1;
-    letter-spacing: 0.01em;
-  }
-
-  .cta-price-details {
-    text-align: left;
-  }
-  .cta-price-label {
-    font-size: 12px;
-    color: var(--gray);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .cta-price-sub {
-    font-size: 13px;
-    color: var(--teal);
-    margin-top: 4px;
-  }
-
-  .cta-includes {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 28px;
-    text-align: left;
-  }
-
-  .cta-include-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--gray);
-  }
-  .cta-include-item::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--teal);
-    min-width: 6px;
-  }
+  .includes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  .includes div { display: flex; gap: 10px; font-size: 13px; color: var(--gray); align-items: flex-start; line-height: 1.5; }
+  .includes div::before { content: '✓'; color: var(--teal); font-size: 12px; }
 
   .btn-full {
-    display: block;
-    width: 100%;
-    background: var(--teal);
-    color: #000;
-    font-family: var(--font-body);
-    font-size: 16px;
-    font-weight: 500;
-    padding: 18px 24px;
-    border-radius: 6px;
-    text-decoration: none;
-    text-align: center;
-    transition: all 0.2s;
-    border: none;
-    cursor: pointer;
+    display: block; width: 100%;
+    background: var(--teal); color: #000;
+    font-family: var(--font-body); font-size: 16px; font-weight: 500;
+    padding: 16px 24px; border-radius: 6px;
+    text-decoration: none; text-align: center;
+    transition: all 0.2s; border: none; cursor: pointer;
   }
-  .btn-full:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-  }
+  .btn-full:hover { opacity: 0.9; transform: translateY(-2px); }
+  .price-foot { font-size: 12px; color: var(--gray2); margin-top: 12px; text-align: center; }
 
-  .cta-guarantee {
-    font-size: 12px;
-    color: var(--gray2);
-    margin-top: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
+  /* FINAL CTA */
+  .final-cta { text-align: center; }
+  .final-cta .section-title { font-size: clamp(38px, 8vw, 72px); }
+  .final-cta .section-label { justify-content: center; }
+  .final-cta .section-intro { margin: 0 auto 26px; }
 
-  .cta-guarantee svg { width: 14px; height: 14px; color: var(--gray2); }
+  /* REFERENCES */
+  .refs-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .refs-list li { font-size: 13px; color: var(--gray); font-weight: 300; padding-left: 14px; position: relative; line-height: 1.5; }
+  .refs-list li::before { content: '—'; position: absolute; left: 0; color: var(--gray2); }
 
   /* FOOTER */
   footer {
     border-top: 1px solid var(--border);
-    padding: 32px 24px;
+    padding: 32px 20px 40px;
     text-align: center;
   }
+  .footer-logo { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.08em; color: var(--teal); }
+  .footer-tag { font-size: 12px; color: var(--gray); letter-spacing: 0.08em; margin-top: 4px; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 20px; }
+  .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; }
+  .footer-links a:hover { color: var(--teal); }
+  footer p.legal { font-size: 11px; color: var(--gray2); line-height: 1.7; margin-top: 18px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
-  footer p {
-    font-size: 12px;
-    color: var(--gray2);
-    line-height: 1.7;
+  /* STICKY MOBILE CTA */
+  .sticky-cta {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 90;
+    background: rgba(10,10,11,0.92);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
   }
-
-  footer a {
-    color: var(--gray);
-    text-decoration: none;
+  @media (min-width: 760px) { .sticky-cta { display: none; } }
+  .sticky-cta .s-price { font-family: var(--font-display); font-size: 22px; line-height: 1; color: var(--white); }
+  .sticky-cta .s-note { font-size: 10px; color: var(--gray2); letter-spacing: 0.06em; }
+  .sticky-cta a {
+    background: var(--teal); color: #000; text-decoration: none;
+    font-size: 14px; font-weight: 500; padding: 11px 20px; border-radius: 4px;
+    white-space: nowrap;
   }
-  footer a:hover { color: var(--teal); }
 
   /* ANIMATIONS */
   @keyframes fadeUp {
@@ -797,226 +675,240 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     to { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes slideLine {
-    0% { left: -100%; }
-    100% { left: 100%; }
-  }
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* DIVIDER */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0;
-  }
-
-  /* MOBILE */
-  @media (max-width: 500px) {
-    .pages-grid { grid-template-columns: repeat(2, 1fr); }
-    .hero-cta-group { flex-direction: column; align-items: flex-start; }
-  }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 `;
+
 const BODY = `
-<!-- NAV -->
 <nav>
-  <div class="nav-logo">La Guía</div>
-  <a href="https://niwi.gumroad.com/l/guia-gym-principiantes" class="nav-cta" target="_blank">Comprar — $129 MXN</a>
+  <div>
+    <div class="nav-logo">Esencial Gym</div>
+    <div class="nav-tag">Menos ruido. Más claridad.</div>
+  </div>
+  <a href="${CHECKOUT_URL}" class="nav-cta" target="_blank" rel="noopener">Empezar ahora <span>$${PRICE}</span></a>
 </nav>
 
 <div class="wrapper">
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow">Guía digital para principiantes</div>
+    <div class="hero-eyebrow">Para principiantes</div>
     <h1 class="hero-title">
-      La guía
-      <span class="accent">definitiva</span>
+      <span>Deja de</span>
+      <span class="accent">improvisar</span>
+      <span>en el gym</span>
     </h1>
-    <p class="hero-subtitle">Para empezar en el gym</p>
     <p class="hero-desc">
-      <strong>Deja de perder tiempo.</strong> Todo lo que necesitas saber para empezar, entender tu objetivo y progresar — sin relleno, sin mitos, sin vueltas.
+      Un sistema simple para que sepas <strong>qué entrenar, cómo progresar y qué registrar</strong> durante tus primeras semanas en el gimnasio.
+    </p>
+    <p class="hero-desc-sm">
+      Sin rutinas random. Sin consejos contradictorios. Sin transformaciones milagro.
     </p>
     <div class="hero-cta-group">
-      <a href="https://niwi.gumroad.com/l/guia-gym-principiantes" class="btn-primary" target="_blank">
-        Quiero la guía
-        <span class="arrow">→</span>
+      <a href="${CHECKOUT_URL}" class="btn-primary" target="_blank" rel="noopener">
+        Quiero empezar con un plan <span class="arrow">→</span>
       </a>
-      <div class="price-display">
-        <span class="price-amount">$129 MXN</span>
-        <span class="price-note">Descarga inmediata · PDF</span>
-      </div>
+      <span class="price-note">Pago único · Acceso inmediato</span>
     </div>
-    <div class="hero-scroll-hint">
-      <span class="scroll-line"></span>
-      Scroll
-    </div>
-  </section>
-
-  <!-- BOOK PREVIEW -->
-  <section class="book-section reveal">
-    <div class="section-label">Lo que incluye</div>
-    <h2 class="section-title">37 páginas.<br>Todo lo esencial.</h2>
-    <div class="pages-grid">
-
-      <div class="page-card">
-        <div class="page-num">Cap. 1</div>
-        <div class="page-icon">📘</div>
-        <div class="page-label">Introducción</div>
-        <div class="page-desc">Por qué la información no es el problema</div>
-      </div>
-
-      <div class="page-card">
-        <div class="page-num">Cap. 2</div>
-        <div class="page-icon">⚡</div>
-        <div class="page-label">Conceptos básicos</div>
-        <div class="page-desc">Series, reps, fallo, sobrecarga progresiva</div>
-      </div>
-
-      <div class="page-card">
-        <div class="page-num">Cap. 3</div>
-        <div class="page-icon">🎯</div>
-        <div class="page-label">Tu objetivo</div>
-        <div class="page-desc">Cut, bulk o recomposición — cómo elegir</div>
-      </div>
-
-      <div class="page-card">
-        <div class="page-num">Cap. 4</div>
-        <div class="page-icon">🏋️</div>
-        <div class="page-label">Rutina 4 días</div>
-        <div class="page-desc">Lista para empezar el lunes</div>
-      </div>
-
-      <div class="page-card">
-        <div class="page-num">Cap. 5</div>
-        <div class="page-icon">🥗</div>
-        <div class="page-label">Alimentación</div>
-        <div class="page-desc">Calorías, proteína y lo que sí importa</div>
-      </div>
-
-      <div class="page-card">
-        <div class="page-num">Cap. 6</div>
-        <div class="page-icon">🚫</div>
-        <div class="page-label">Errores comunes</div>
-        <div class="page-desc">Los que frenan a la mayoría</div>
-      </div>
-
-      <div class="page-card">
-        <div class="page-num">Cap. 7</div>
-        <div class="page-icon">❓</div>
-        <div class="page-label">FAQ</div>
-        <div class="page-desc">Las dudas más frecuentes respondidas</div>
-      </div>
-
-      <div class="page-card" style="border-color: rgba(62,207,178,0.3);">
-        <div class="page-num" style="color: var(--teal)">Bonus</div>
-        <div class="page-icon" style="background: var(--teal-glow)">📋</div>
-        <div class="page-label" style="color: var(--teal)">Tracker</div>
-        <div class="page-desc">Hoja de seguimiento semanal imprimible</div>
-      </div>
-
+    <div class="trust-mini">
+      <span>Para principiantes</span>
+      <span>Aplicable desde tu primera semana</span>
+      <span>Sin dietas extremas</span>
     </div>
   </section>
 
   <hr class="divider">
 
-  <!-- BENEFITS -->
-  <section class="benefits-section reveal">
+  <!-- PROBLEMA -->
+  <section class="sec reveal">
+    <div class="section-label">El problema</div>
+    <h2 class="section-title">Empezar en el gym<br>no debería ser<br><span class="teal">tan confuso</span></h2>
+    <div class="grid-4">
+      <div class="card">
+        <div class="card-icon">🔀</div>
+        <h4>Rutinas random</h4>
+        <p>Una rutina distinta cada semana y ningún criterio para elegir.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💬</div>
+        <h4>Consejos contradictorios</h4>
+        <p>Cada video dice lo contrario del anterior.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <h4>No saber cuánto peso usar</h4>
+        <p>Empezar la serie adivinando la carga.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📉</div>
+        <h4>No saber si progresas</h4>
+        <p>Entrenas semanas sin una forma de medirlo.</p>
+      </div>
+    </div>
+    <p class="note-text">
+      Cuando eres principiante, tener más información no siempre ayuda.
+      <strong>Necesitas saber qué hacer hoy.</strong>
+    </p>
+    <div class="highlight">
+      Menos información.
+      <span class="teal">Más dirección.</span>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- OBJETIVO -->
+  <section class="sec reveal">
+    <div class="section-label">El objetivo</div>
+    <h2 class="section-title">De “no sé qué hacer”<br>a <span class="teal">“sé qué toca hoy”</span></h2>
+    <p class="section-intro">
+      El objetivo no es que memorices fitness. Es que tengas una estructura clara para entrenar, registrar y ajustar sin cambiar de rutina cada semana.
+    </p>
+    <div class="grid-4">
+      <div class="card"><span class="card-num">01</span><h4>Entiende lo básico</h4><p>Los conceptos mínimos que sí necesitas.</p></div>
+      <div class="card"><span class="card-num">02</span><h4>Elige tu rutina</h4><p>3 o 4 días, según tu semana real.</p></div>
+      <div class="card"><span class="card-num">03</span><h4>Entrena y registra</h4><p>Carga, repeticiones y esfuerzo.</p></div>
+      <div class="card"><span class="card-num">04</span><h4>Ajusta semana a semana</h4><p>Reglas claras para decidir el siguiente paso.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LO QUE RECIBES -->
+  <section class="sec reveal">
+    <div class="section-label">Lo que recibes</div>
+    <h2 class="section-title">Todo lo que necesitas<br>para empezar<br><span class="teal">con un plan</span></h2>
+    <div class="grid-4">
+      <div class="card"><div class="card-icon">🚀</div><h4>Empieza aquí</h4><p>Qué leer, qué preparar y cómo afrontar tu primera sesión.</p></div>
+      <div class="card"><div class="card-icon">🏋️</div><h4>Rutina de 4 días</h4><p>Ejercicios, series, repeticiones y una estructura clara para progresar.</p></div>
+      <div class="card"><div class="card-icon">📆</div><h4>Rutina de 3 días</h4><p>Alternativa para cuando cuatro sesiones no encajan en tu semana.</p></div>
+      <div class="card"><div class="card-icon">📋</div><h4>Registro de 8 semanas</h4><p>Peso, repeticiones, esfuerzo y próxima decisión.</p></div>
+      <div class="card"><div class="card-icon">📈</div><h4>Progresión</h4><p>Cómo saber cuándo mantener, subir o ajustar una carga.</p></div>
+      <div class="card"><div class="card-icon">🔁</div><h4>Sustituciones <span class="badge-soon">próximamente</span></h4><p>Qué hacer cuando un ejercicio no está disponible o no te funciona.</p></div>
+      <div class="card"><div class="card-icon">🥗</div><h4>Alimentación básica</h4><p>Calorías, proteína, carbohidratos y ejemplos sencillos sin dietas absurdas.</p></div>
+      <div class="card"><div class="card-icon">📘</div><h4>Guía esencial</h4><p>La guía principal con los conceptos que sí necesitas entender.</p></div>
+      <div class="card"><div class="card-icon">❓</div><h4>FAQ</h4><p>Problemas comunes de las primeras semanas y cómo resolverlos.</p></div>
+      <div class="card"><div class="card-icon">🤖</div><h4>Prompts opcionales <span class="badge-soon">próximamente</span></h4><p>Herramientas para organizar la información con IA.</p></div>
+    </div>
+    <p class="note-text">No necesitas ChatGPT para usar el producto. Los recursos marcados como próximamente se añaden sin costo cuando estén listos.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PREVIEW -->
+  <section class="sec reveal" style="max-width:900px">
+    <div class="section-label">Mira lo que recibes</div>
+    <h2 class="section-title">No compres <span class="teal">a ciegas</span></h2>
+    <p class="section-intro">
+      Una marca anónima tiene que ganarse tu confianza mostrando lo que vende. Aquí puedes ver exactamente cómo está organizado el material.
+    </p>
+    <div class="preview-track">
+
+      <div class="preview-item">
+        <div class="preview-frame">
+          <div class="pv-tag">Portada</div>
+          <div class="pv-h">Esencial<br>Gym</div>
+          <div class="pv-line m"></div>
+          <div class="pv-line s"></div>
+          <div style="flex:1"></div>
+          <div class="pv-line s"></div>
+        </div>
+        <div class="preview-caption">Portada de la guía</div>
+      </div>
+
+      <div class="preview-item">
+        <div class="preview-frame">
+          <div class="pv-tag">Día 1 · Empuje</div>
+          <div class="pv-h">Rutina</div>
+          <div class="pv-row"><div class="pv-cell on"></div><div class="pv-cell"></div><div class="pv-cell"></div></div>
+          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell on"></div><div class="pv-cell"></div></div>
+          <div class="pv-row"><div class="pv-cell on"></div><div class="pv-cell"></div><div class="pv-cell"></div></div>
+          <div class="pv-line m"></div>
+          <div class="pv-line s"></div>
+        </div>
+        <div class="preview-caption">Página de rutina</div>
+      </div>
+
+      <div class="preview-item">
+        <div class="preview-frame">
+          <div class="pv-tag">Semana 3</div>
+          <div class="pv-h">Registro</div>
+          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell"></div><div class="pv-cell on"></div><div class="pv-cell"></div></div>
+          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell on"></div><div class="pv-cell"></div><div class="pv-cell"></div></div>
+          <div class="pv-row"><div class="pv-cell on"></div><div class="pv-cell"></div><div class="pv-cell"></div><div class="pv-cell on"></div></div>
+          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell"></div><div class="pv-cell on"></div><div class="pv-cell"></div></div>
+        </div>
+        <div class="preview-caption">Ejemplo del registro</div>
+      </div>
+
+      <div class="preview-item">
+        <div class="preview-frame">
+          <div class="pv-tag">Reglas</div>
+          <div class="pv-h">Progresión</div>
+          <div class="pv-line"></div>
+          <div class="pv-line m"></div>
+          <div class="pv-line s"></div>
+          <div class="pv-line m"></div>
+          <div class="pv-line"></div>
+        </div>
+        <div class="preview-caption">Página de progresión</div>
+      </div>
+
+      <div class="preview-item">
+        <div class="preview-frame">
+          <div class="pv-tag">Base</div>
+          <div class="pv-h">Alimentación</div>
+          <div class="pv-row"><div class="pv-cell on"></div><div class="pv-cell"></div></div>
+          <div class="pv-line m"></div>
+          <div class="pv-line"></div>
+          <div class="pv-line s"></div>
+        </div>
+        <div class="preview-caption">Ejemplo de alimentación</div>
+      </div>
+
+      <div class="preview-item">
+        <div class="preview-frame">
+          <div class="pv-tag">Próximamente</div>
+          <div class="pv-h">Sustituciones</div>
+          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell"></div></div>
+          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell"></div></div>
+          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell"></div></div>
+        </div>
+        <div class="preview-caption">Tabla de sustituciones</div>
+      </div>
+
+    </div>
+    <p class="preview-disclaimer">Vistas esquemáticas del material. Pendiente sustituirlas por capturas reales del producto.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- BENEFICIOS -->
+  <section class="sec reveal">
     <div class="section-label">Beneficios</div>
     <h2 class="section-title">Lo que vas<br>a lograr</h2>
     <div class="benefits-grid">
-
-      <div class="benefit-item">
-        <div class="benefit-check">
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="2,6 5,9 10,3"/>
-          </svg>
-        </div>
-        <div class="benefit-text">
-          <h4>Sabrás exactamente qué hacer</h4>
-          <p>Desde el primer día, sin adivinar ni improvisar rutinas de YouTube.</p>
-        </div>
-      </div>
-
-      <div class="benefit-item">
-        <div class="benefit-check">
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="2,6 5,9 10,3"/>
-          </svg>
-        </div>
-        <div class="benefit-text">
-          <h4>Rutina lista para el lunes</h4>
-          <p>4 días estructurados, con ejercicios, series y reps concretos.</p>
-        </div>
-      </div>
-
-      <div class="benefit-item">
-        <div class="benefit-check">
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="2,6 5,9 10,3"/>
-          </svg>
-        </div>
-        <div class="benefit-text">
-          <h4>Claridad sobre tu objetivo</h4>
-          <p>Entenderás si te conviene cortar grasa, ganar masa o hacer recomposición.</p>
-        </div>
-      </div>
-
-      <div class="benefit-item">
-        <div class="benefit-check">
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="2,6 5,9 10,3"/>
-          </svg>
-        </div>
-        <div class="benefit-text">
-          <h4>Alimentación sin dietas raras</h4>
-          <p>La base real: calorías, proteína y cómo comer para tu objetivo.</p>
-        </div>
-      </div>
-
-      <div class="benefit-item">
-        <div class="benefit-check">
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="2,6 5,9 10,3"/>
-          </svg>
-        </div>
-        <div class="benefit-text">
-          <h4>Evitas los errores que frenan a todos</h4>
-          <p>Los que hacen que la gente pase meses en el gym sin ver resultados.</p>
-        </div>
-      </div>
-
-      <div class="benefit-item">
-        <div class="benefit-check">
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="2,6 5,9 10,3"/>
-          </svg>
-        </div>
-        <div class="benefit-text">
-          <h4>Todo en 90 minutos de lectura</h4>
-          <p>37 páginas visuales y directas. Sin relleno ni capítulos de motivación vacía.</p>
-        </div>
-      </div>
-
+      ${[
+        ['Sabrás qué hacer en tu siguiente sesión', 'No vas a depender de improvisar o buscar otra rutina cada semana.'],
+        ['Tendrás una rutina lista para usar', 'Ejercicios, series y rangos de repeticiones claros.'],
+        ['Entenderás cómo progresar', 'Sabrás cuándo mantener una carga y cuándo intentar subirla.'],
+        ['Tendrás claridad sobre tu objetivo', 'Pérdida de grasa, ganancia muscular o recomposición explicadas sin extremos.'],
+        ['Entenderás una base de alimentación', 'Sin dietas rígidas ni reglas absurdas.'],
+        ['Ahorrarás semanas de investigación', 'La información importante ya está seleccionada y organizada.'],
+      ]
+        .map(
+          ([h, p]) => `<div class="benefit-item">
+        <div class="benefit-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg></div>
+        <div class="benefit-text"><h4>${h}</h4><p>${p}</p></div>
+      </div>`,
+        )
+        .join('\n')}
     </div>
   </section>
 
-  <hr class="divider">
-
-  <!-- QUOTE -->
+  <!-- MANIFIESTO -->
   <section class="quote-section reveal">
     <div class="quote-bg"></div>
     <div class="quote-text">
@@ -1024,38 +916,34 @@ const BODY = `
       <span class="line2">es simple,</span>
       <span class="line3">pero no necesariamente fácil.</span>
     </div>
+    <p class="quote-sub">
+      No necesitas una rutina secreta. Necesitas claridad, constancia y una forma de medir si estás avanzando.
+    </p>
   </section>
 
-  <hr class="divider">
-
-  <!-- FOR WHO -->
-  <section class="forwho-section reveal">
+  <!-- PARA QUIÉN -->
+  <section class="sec reveal">
     <div class="section-label">Para quién es</div>
     <h2 class="section-title">¿Es para ti?</h2>
-    <div class="forwho-grid">
+    <div class="grid-2">
       <div class="forwho-card yes">
-        <div class="forwho-header">
-          <div class="forwho-dot"></div>
-          <div class="forwho-title">Sí es para ti</div>
-        </div>
+        <div class="forwho-header"><div class="forwho-dot"></div><div class="forwho-title">Sí es para ti si</div></div>
         <ul class="forwho-list">
-          <li>Quieres empezar en el gym pero no sabes por dónde</li>
-          <li>Llevas tiempo buscando info y estás más confundido que antes</li>
-          <li>Quieres bajar grasa, ganar músculo o ambas cosas</li>
-          <li>Quieres una guía clara, no más consejos contradictorios</li>
-          <li>Buscas algo que puedas empezar a aplicar esta semana</li>
+          <li>Quieres empezar en el gym pero no sabes por dónde.</li>
+          <li>Ya entrenas, pero sientes que improvisas.</li>
+          <li>Estás cansado de consejos contradictorios.</li>
+          <li>Quieres mejorar tu físico pero no sabes qué enfoque elegir.</li>
+          <li>Quieres algo que puedas empezar a aplicar esta semana.</li>
         </ul>
       </div>
       <div class="forwho-card no">
-        <div class="forwho-header">
-          <div class="forwho-dot"></div>
-          <div class="forwho-title">No es para ti</div>
-        </div>
+        <div class="forwho-header"><div class="forwho-dot"></div><div class="forwho-title">No es para ti si</div></div>
         <ul class="forwho-list">
-          <li>Ya llevas 1–2 años entrenando con consistencia</li>
-          <li>Buscas una rutina avanzada con periodización compleja</li>
-          <li>Quieres un plan de dieta personalizado con macros exactos</li>
-          <li>Esperas una fórmula mágica para transformarte en 2 semanas</li>
+          <li>Ya dominas programación, progresión y nutrición básica y buscas un plan avanzado.</li>
+          <li>Necesitas una dieta clínica personalizada.</li>
+          <li>Buscas rehabilitación de una lesión.</li>
+          <li>Quieres preparación para competencia o culturismo avanzado.</li>
+          <li>Esperas una transformación garantizada en pocas semanas.</li>
         </ul>
       </div>
     </div>
@@ -1063,113 +951,224 @@ const BODY = `
 
   <hr class="divider">
 
-  <!-- ABOUT -->
-  <section class="about-section reveal">
-    <div class="section-label">De dónde viene esto</div>
-    <div style="max-width: 640px;">
-      <h2 class="section-title" style="margin-bottom: 28px;">Hecha por alguien<br><span style="color:var(--teal)">que estuvo ahí.</span></h2>
-      <p style="font-size: 16px; color: var(--gray); font-weight: 300; line-height: 1.85; margin-bottom: 18px;">
-        Esta guía no la hizo un entrenador certificado ni alguien con miles de seguidores.
-        La hizo alguien que pasó meses entrenando mal — siguiendo rutinas de YouTube que no tenían sentido, probando suplementos que no necesitaba, sin entender por qué no veía resultados.
-      </p>
-      <p style="font-size: 16px; color: var(--gray); font-weight: 300; line-height: 1.85; margin-bottom: 18px;">
-        Con tiempo y entrenando en serio, aprendió lo que realmente funciona. No desde la teoría — desde haberlo vivido.
-        Y lo único que faltaba era tenerlo todo organizado en un solo lugar, claro y sin relleno.
-      </p>
-      <p style="font-size: 16px; color: var(--white); font-weight: 400; line-height: 1.85; margin-bottom: 28px;">
-        <em style="font-style: normal; color: var(--teal);">Eso es esta guía.</em> Lo que ojalá hubiera existido cuando empezó.
-      </p>
-      <div class="about-tags">
-        <span class="about-tag">Experiencia real</span>
-        <span class="about-tag">Sin títulos inventados</span>
-        <span class="about-tag">Basado en evidencia</span>
-        <span class="about-tag">Sin agenda de suplementos</span>
-        <span class="about-tag">Sin promesas de 4 semanas</span>
+  <!-- POR QUÉ CONFIAR -->
+  <section class="sec reveal">
+    <div class="section-label">Por qué confiar</div>
+    <h2 class="section-title">Sin credenciales inventadas.<br><span class="teal">Sin promesas inventadas.</span></h2>
+    <p class="section-intro">
+      Esencial Gym organiza principios básicos de entrenamiento y alimentación con lenguaje pensado para principiantes y referencias públicas.
+    </p>
+    <p class="note-text">
+      El material tiene fines educativos y no sustituye valoración médica, nutricional ni entrenamiento individual.
+    </p>
+    <div class="badges">
+      <span>Fuentes visibles</span>
+      <span>Lenguaje para principiantes</span>
+      <span>Sin transformaciones garantizadas</span>
+      <span>Sin agenda de suplementos</span>
+      <span>Revisado y corregido antes de publicar</span>
+      <span>Probado con lectores principiantes</span>
+    </div>
+    <a href="#referencias" class="link-teal">Ver referencias</a>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PRUEBA SOCIAL -->
+  <section class="sec reveal">
+    <div class="section-label">Lo que dicen quienes ya la probaron</div>
+    <h2 class="section-title">Claridad antes<br>que <span class="teal">humo</span></h2>
+    <p class="section-intro">
+      Personas que han probado versiones previas del material han destacado principalmente la claridad, la estructura y lo fácil que resulta entender qué hacer después.
+    </p>
+    <div class="rating-row">
+      <div class="rating-score">4.8</div>
+      <div>
+        <div class="stars">★★★★★</div>
+        <div class="rating-note">Promedio de lectores beta · sobre 5</div>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p>“Me gustó porque te explica las cosas sin complicarlas. Terminas entendiendo qué hacer y por qué hacerlo.”</p>
+        <div class="t-label">Usuario beta · Principiante</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p>“Está explicado mucho más simple que la mayoría del contenido que había visto.”</p>
+        <div class="t-label">Usuario beta · Principiante</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p>“Por fin entendí qué debía registrar y qué revisar en mi siguiente sesión.”</p>
+        <div class="t-label">Usuario beta · Principiante</div>
       </div>
     </div>
   </section>
 
+  <hr class="divider">
+
+  <!-- CÓMO USARLO -->
+  <section class="sec reveal">
+    <div class="section-label">Cómo usarlo</div>
+    <h2 class="section-title">Empieza en <span class="teal">4 pasos</span></h2>
+    <div class="grid-4">
+      <div class="card"><span class="card-num">1</span><h4>Lee “Empieza aquí”</h4><p>Entiende el sistema antes de tu primera sesión.</p></div>
+      <div class="card"><span class="card-num">2</span><h4>Elige 3 o 4 días</h4><p>Usa la rutina que mejor encaje con tu semana.</p></div>
+      <div class="card"><span class="card-num">3</span><h4>Entrena y registra</h4><p>Anota carga, repeticiones y esfuerzo.</p></div>
+      <div class="card"><span class="card-num">4</span><h4>Revisa y ajusta</h4><p>Usa las reglas de progresión para decidir qué hacer después.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FAQ -->
+  <section class="sec reveal">
+    <div class="section-label">Preguntas frecuentes</div>
+    <h2 class="section-title">Antes de <span class="teal">comprar</span></h2>
+    <div class="faq-list">
+      ${[
+        ['¿Necesito experiencia previa?', 'No. El producto está hecho para principiantes.'],
+        ['¿Tengo que entrenar 4 días?', 'No. El kit incluye una alternativa de 3 días.'],
+        [
+          '¿Necesito equipo específico?',
+          'Está pensado para un gimnasio comercial y se incluyen sustituciones para varios movimientos.',
+        ],
+        ['¿Es una dieta personalizada?', 'No. El contenido de alimentación es educativo y general.'],
+        [
+          '¿Sirve si tengo una lesión?',
+          'No está diseñado para diagnosticar, tratar ni rehabilitar lesiones. Consulta a un profesional.',
+        ],
+        ['¿Necesito ChatGPT?', 'No. Los prompts de IA son complementarios.'],
+        [
+          '¿En qué formato lo recibo?',
+          'Archivos digitales descargables (PDF) disponibles inmediatamente después de la compra.',
+        ],
+        [
+          '¿Esto garantiza resultados?',
+          'No. Los resultados dependen de múltiples factores. El objetivo del producto es darte una estructura clara y aplicable.',
+        ],
+      ]
+        .map(([q, a]) => `<details class="faq"><summary>${q}</summary><p>${a}</p></details>`)
+        .join('\n')}
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PRECIO -->
+  <section class="sec reveal" id="comprar" style="max-width:640px">
+    <div class="section-label">Empieza con un plan</div>
+    <h2 class="section-title">Kit <span class="teal">esencial</span></h2>
+    <p class="section-intro">Pago único · acceso inmediato</p>
+    <div class="price-box">
+      <div class="price-row">
+        <div class="price-main">$${PRICE}</div>
+        <div class="price-cur">${CURRENCY}</div>
+      </div>
+      <div class="price-sub">Precio temporal de lanzamiento</div>
+      <div class="includes">
+        <div>Guía Esencial</div>
+        <div>Rutina principal</div>
+        <div>Registro</div>
+        <div>Progresión</div>
+        <div>Alimentación básica</div>
+        <div>FAQ</div>
+        <div>Recursos adicionales incluidos cuando estén disponibles</div>
+      </div>
+      <a href="${CHECKOUT_URL}" class="btn-full" target="_blank" rel="noopener">Quiero empezar ahora →</a>
+      <p class="price-foot">Sin suscripción.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
   <!-- CTA FINAL -->
-  <section class="cta-section reveal">
-    <div class="cta-badge">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
-      Disponible ahora — descarga inmediata
-    </div>
-    <h2 class="cta-title">
-      Deja de<br>
-      <span class="teal">perder tiempo</span>
-    </h2>
-    <p class="cta-desc">Una sola mensualidad de gym cuesta más. Una sesión con entrenador, el doble. Esta guía vale lo que ahorras en meses de confusión.</p>
+  <section class="sec reveal final-cta">
+    <h2 class="section-title">Tu primera semana<br>no tiene que ser<br><span class="teal">una adivinanza.</span></h2>
+    <p class="section-intro">Empieza con una estructura clara y aprende a ajustarla conforme avanzas.</p>
+    <a href="${CHECKOUT_URL}" class="btn-primary" target="_blank" rel="noopener">Empezar con un plan <span class="arrow">→</span></a>
+  </section>
 
-    <div class="cta-box">
-      <div class="cta-price-row">
-        <div class="cta-price-main">$129</div>
-        <div class="cta-price-details">
-          <div class="cta-price-label">MXN · Pago único</div>
-          <div class="cta-price-sub">+ Bonus: Tracker semanal</div>
-        </div>
-      </div>
-
-      <div class="cta-includes">
-        <div class="cta-include-item">Guía completa en PDF — 37 páginas</div>
-        <div class="cta-include-item">Rutina de 4 días lista para empezar</div>
-        <div class="cta-include-item">Guía de cut, bulk y recomposición</div>
-        <div class="cta-include-item">Alimentación básica sin dietas raras</div>
-        <div class="cta-include-item">Bonus: Hoja de seguimiento semanal</div>
-        <div class="cta-include-item">Acceso de por vida · Una sola compra</div>
-      </div>
-
-      <a href="https://niwi.gumroad.com/l/guia-gym-principiantes" class="btn-full" target="_blank">
-        Quiero la guía ahora →
-      </a>
-
-      <p class="cta-guarantee">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M8 1L10.5 5.5L15 6.27L11.5 9.73L12.36 14L8 11.77L3.64 14L4.5 9.73L1 6.27L5.5 5.5L8 1Z"/>
-        </svg>
-        Acceso inmediato tras la compra · PDF descargable
-      </p>
-    </div>
-
-    <p style="font-size:12px; color: var(--gray2); margin-top:16px; line-height:1.6">
-      Esta guía tiene fines educativos e informativos. No sustituye el consejo de un médico o profesional de la salud.
+  <!-- REFERENCIAS -->
+  <section class="sec reveal" id="referencias">
+    <div class="section-label">Referencias</div>
+    <h2 class="section-title">De dónde sale<br>lo que se afirma</h2>
+    <p class="section-intro">
+      El material se apoya en recomendaciones públicas y literatura básica de entrenamiento y nutrición general.
     </p>
+    <ul class="refs-list">
+      <li>Recomendaciones de actividad física de la Organización Mundial de la Salud.</li>
+      <li>Guías de entrenamiento de fuerza del American College of Sports Medicine (ACSM).</li>
+      <li>Posicionamiento sobre proteína y composición corporal de la International Society of Sports Nutrition (ISSN).</li>
+      <li>Literatura general sobre sobrecarga progresiva y volumen de entrenamiento.</li>
+    </ul>
+    <p class="note-text">Contenido educativo. No sustituye valoración médica, nutricional ni entrenamiento individual.</p>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <p>
-      © 2025 La Guía Definitiva Para Empezar en el Gym ·
-      <a href="https://niwi.gumroad.com/l/guia-gym-principiantes">Comprar</a>
+    <div class="footer-logo">Esencial Gym</div>
+    <div class="footer-tag">Menos ruido. Más claridad.</div>
+    <div class="footer-links">
+      <a href="#referencias">Referencias</a>
+      <a href="mailto:${CONTACT_EMAIL}">Contacto y soporte</a>
+      <a href="${CHECKOUT_URL}" target="_blank" rel="noopener">Términos y política de compra</a>
+    </div>
+    <p class="legal">
+      Aviso educativo: el contenido de Esencial Gym tiene fines informativos y educativos. No constituye consejo médico,
+      nutricional ni de rehabilitación, y no garantiza resultados. Consulta a un profesional de la salud antes de iniciar
+      un programa de ejercicio. La política de reembolso y los términos de compra aplican los del checkout.
     </p>
-    <p style="margin-top: 6px;">Hecho con intención, no con promesas.</p>
+    <p class="legal">© ${new Date().getFullYear()} Esencial Gym</p>
   </footer>
 
 </div>
 
+<div class="sticky-cta">
+  <div>
+    <div class="s-price">$${PRICE} ${CURRENCY}</div>
+    <div class="s-note">Pago único</div>
+  </div>
+  <a href="${CHECKOUT_URL}" target="_blank" rel="noopener">Empezar ahora →</a>
+</div>
 `;
+
 const SCRIPT = `  const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
+  }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
   reveals.forEach(el => observer.observe(el));
 `;
 
 export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
-      { title: 'La Guía Definitiva Para Empezar en el Gimnasio' },
-      { name: 'description', content: 'Guía definitiva para empezar en el gimnasio.' },
+      { title: 'Esencial Gym — Deja de improvisar en el gym' },
+      {
+        name: 'description',
+        content:
+          'Un sistema simple para principiantes: qué entrenar, cómo progresar y qué registrar en tus primeras semanas de gimnasio. Menos ruido. Más claridad.',
+      },
+      { property: 'og:title', content: 'Esencial Gym — Deja de improvisar en el gym' },
+      {
+        property: 'og:description',
+        content:
+          'Rutina, registro y reglas de progresión para tus primeras semanas en el gimnasio. Pago único, acceso inmediato.',
+      },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: '' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap',
+      },
     ],
   }),
   component: Index,
@@ -1180,7 +1179,9 @@ function Index() {
     const s = document.createElement('script');
     s.textContent = SCRIPT;
     document.body.appendChild(s);
-    return () => { s.remove(); };
+    return () => {
+      s.remove();
+    };
   }, []);
   return (
     <>
