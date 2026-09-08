@@ -113,11 +113,11 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
 
   /* SECTIONS */
   .sec {
-    padding: 56px 20px;
+    padding: 48px 20px;
     max-width: 900px;
     margin: 0 auto;
   }
-  @media (min-width: 760px) { .sec { padding: 72px 24px; } }
+  @media (min-width: 760px) { .sec { padding: 60px 24px; } }
 
   .section-label {
     font-size: 11px;
@@ -326,19 +326,6 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     display: block;
   }
 
-  .badge-soon {
-    display: inline-block;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--gray2);
-    border: 1px solid var(--border2);
-    border-radius: 20px;
-    padding: 2px 8px;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-
   /* HIGHLIGHT LINE */
   .highlight {
     margin-top: 28px;
@@ -427,12 +414,6 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     letter-spacing: 0.02em;
   }
 
-  .preview-disclaimer {
-    font-size: 11px;
-    color: var(--gray2);
-    margin-top: 10px;
-  }
-
   /* BENEFITS */
   .benefits-grid {
     display: grid;
@@ -467,43 +448,6 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
   .benefit-check svg { width: 11px; height: 11px; color: var(--teal); }
   .benefit-text h4 { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
   .benefit-text p { font-size: 13px; color: var(--gray); line-height: 1.5; font-weight: 300; }
-
-  /* QUOTE */
-  .quote-section {
-    padding: 64px 20px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .quote-bg {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at center, rgba(62,207,178,0.05) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .quote-text {
-    font-family: var(--font-display);
-    font-size: clamp(32px, 6.5vw, 64px);
-    line-height: 1.02;
-    letter-spacing: 0.01em;
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-  .quote-text .line1 { color: var(--white); display: block; }
-  .quote-text .line2 { color: var(--teal); display: block; }
-  .quote-text .line3 { color: var(--gray); display: block; }
-  .quote-sub {
-    position: relative; z-index: 1;
-    margin: 20px auto 0;
-    max-width: 520px;
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--gray);
-    line-height: 1.7;
-  }
 
   /* FOR WHO */
   .forwho-card {
@@ -550,17 +494,10 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
   }
   .link-teal:hover { border-color: var(--teal); }
 
-  /* RATING */
-  .rating-row {
-    display: flex; align-items: center; gap: 12px;
-    margin-top: 22px; flex-wrap: wrap;
-  }
-  .rating-score {
-    font-family: var(--font-display);
-    font-size: 34px; line-height: 1; color: var(--white);
-  }
-  .stars { color: var(--teal); letter-spacing: 2px; font-size: 15px; }
-  .rating-note { font-size: 12px; color: var(--gray2); }
+  .sec.credibility-strip, .sec.references-compact { padding-top: 28px; padding-bottom: 28px; }
+  .credibility-strip .badges { margin-top: 0; }
+  .credibility-strip .link-teal { margin-top: 12px; }
+  .benefit-closing { margin-top: 20px; }
 
   .t-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
   .t-card p { font-size: 14px; color: var(--white); font-weight: 300; line-height: 1.6; }
@@ -621,12 +558,6 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
   }
   .btn-full:hover { opacity: 0.9; transform: translateY(-2px); }
   .price-foot { font-size: 12px; color: var(--gray2); margin-top: 12px; text-align: center; }
-
-  /* FINAL CTA */
-  .final-cta { text-align: center; }
-  .final-cta .section-title { font-size: clamp(38px, 8vw, 72px); }
-  .final-cta .section-label { justify-content: center; }
-  .final-cta .section-intro { margin: 0 auto 26px; }
 
   /* REFERENCES */
   .refs-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
@@ -759,23 +690,6 @@ const BODY = `
 
   <hr class="divider">
 
-  <!-- OBJETIVO -->
-  <section class="sec reveal">
-    <div class="section-label">El objetivo</div>
-    <h2 class="section-title">De “no sé qué hacer”<br>a <span class="teal">“sé qué toca hoy”</span></h2>
-    <p class="section-intro">
-      El objetivo no es que memorices fitness. Es que tengas una estructura clara para entrenar, registrar y ajustar sin cambiar de rutina cada semana.
-    </p>
-    <div class="grid-4">
-      <div class="card"><span class="card-num">01</span><h4>Entiende lo básico</h4><p>Los conceptos mínimos que sí necesitas.</p></div>
-      <div class="card"><span class="card-num">02</span><h4>Elige tu rutina</h4><p>3 o 4 días, según tu semana real.</p></div>
-      <div class="card"><span class="card-num">03</span><h4>Entrena y registra</h4><p>Carga, repeticiones y esfuerzo.</p></div>
-      <div class="card"><span class="card-num">04</span><h4>Ajusta semana a semana</h4><p>Reglas claras para decidir el siguiente paso.</p></div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
   <!-- LO QUE RECIBES -->
   <section class="sec reveal">
     <div class="section-label">Lo que recibes</div>
@@ -786,13 +700,11 @@ const BODY = `
       <div class="card"><div class="card-icon">📆</div><h4>Rutina de 3 días</h4><p>Alternativa para cuando cuatro sesiones no encajan en tu semana.</p></div>
       <div class="card"><div class="card-icon">📋</div><h4>Registro de 8 semanas</h4><p>Peso, repeticiones, esfuerzo y próxima decisión.</p></div>
       <div class="card"><div class="card-icon">📈</div><h4>Progresión</h4><p>Cómo saber cuándo mantener, subir o ajustar una carga.</p></div>
-      <div class="card"><div class="card-icon">🔁</div><h4>Sustituciones <span class="badge-soon">próximamente</span></h4><p>Qué hacer cuando un ejercicio no está disponible o no te funciona.</p></div>
+      <div class="card"><div class="card-icon">🔁</div><h4>Sustituciones</h4><p>Qué hacer cuando un ejercicio no está disponible o no te funciona.</p></div>
       <div class="card"><div class="card-icon">🥗</div><h4>Alimentación básica</h4><p>Calorías, proteína, carbohidratos y ejemplos sencillos sin dietas absurdas.</p></div>
       <div class="card"><div class="card-icon">📘</div><h4>Guía esencial</h4><p>La guía principal con los conceptos que sí necesitas entender.</p></div>
       <div class="card"><div class="card-icon">❓</div><h4>FAQ</h4><p>Problemas comunes de las primeras semanas y cómo resolverlos.</p></div>
-      <div class="card"><div class="card-icon">🤖</div><h4>Prompts opcionales <span class="badge-soon">próximamente</span></h4><p>Herramientas para organizar la información con IA.</p></div>
     </div>
-    <p class="note-text">No necesitas ChatGPT para usar el producto. Los recursos marcados como próximamente se añaden sin costo cuando estén listos.</p>
   </section>
 
   <hr class="divider">
@@ -801,9 +713,6 @@ const BODY = `
   <section class="sec reveal" style="max-width:900px">
     <div class="section-label">Mira lo que recibes</div>
     <h2 class="section-title">No compres <span class="teal">a ciegas</span></h2>
-    <p class="section-intro">
-      Una marca anónima tiene que ganarse tu confianza mostrando lo que vende. Aquí puedes ver exactamente cómo está organizado el material.
-    </p>
     <div class="preview-track">
 
       <div class="preview-item">
@@ -856,31 +765,7 @@ const BODY = `
         <div class="preview-caption">Página de progresión</div>
       </div>
 
-      <div class="preview-item">
-        <div class="preview-frame">
-          <div class="pv-tag">Base</div>
-          <div class="pv-h">Alimentación</div>
-          <div class="pv-row"><div class="pv-cell on"></div><div class="pv-cell"></div></div>
-          <div class="pv-line m"></div>
-          <div class="pv-line"></div>
-          <div class="pv-line s"></div>
-        </div>
-        <div class="preview-caption">Ejemplo de alimentación</div>
-      </div>
-
-      <div class="preview-item">
-        <div class="preview-frame">
-          <div class="pv-tag">Próximamente</div>
-          <div class="pv-h">Sustituciones</div>
-          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell"></div></div>
-          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell"></div></div>
-          <div class="pv-row"><div class="pv-cell"></div><div class="pv-cell"></div></div>
-        </div>
-        <div class="preview-caption">Tabla de sustituciones</div>
-      </div>
-
     </div>
-    <p class="preview-disclaimer">Vistas esquemáticas del material. Pendiente sustituirlas por capturas reales del producto.</p>
   </section>
 
   <hr class="divider">
@@ -906,20 +791,10 @@ const BODY = `
         )
         .join('\n')}
     </div>
+    <p class="note-text benefit-closing">No necesitas una rutina secreta. Necesitas claridad, constancia y una forma de medir si estás avanzando.</p>
   </section>
 
-  <!-- MANIFIESTO -->
-  <section class="quote-section reveal">
-    <div class="quote-bg"></div>
-    <div class="quote-text">
-      <span class="line1">Progresar en el gym</span>
-      <span class="line2">es simple,</span>
-      <span class="line3">pero no necesariamente fácil.</span>
-    </div>
-    <p class="quote-sub">
-      No necesitas una rutina secreta. Necesitas claridad, constancia y una forma de medir si estás avanzando.
-    </p>
-  </section>
+  <hr class="divider">
 
   <!-- PARA QUIÉN -->
   <section class="sec reveal">
@@ -929,21 +804,21 @@ const BODY = `
       <div class="forwho-card yes">
         <div class="forwho-header"><div class="forwho-dot"></div><div class="forwho-title">Sí es para ti si</div></div>
         <ul class="forwho-list">
-          <li>Quieres empezar en el gym pero no sabes por dónde.</li>
+          <li>Quieres empezar, pero no sabes por dónde.</li>
           <li>Ya entrenas, pero sientes que improvisas.</li>
           <li>Estás cansado de consejos contradictorios.</li>
-          <li>Quieres mejorar tu físico pero no sabes qué enfoque elegir.</li>
-          <li>Quieres algo que puedas empezar a aplicar esta semana.</li>
+          <li>Quieres mejorar tu físico con un enfoque claro.</li>
+          <li>Quieres empezar a aplicarlo esta semana.</li>
         </ul>
       </div>
       <div class="forwho-card no">
         <div class="forwho-header"><div class="forwho-dot"></div><div class="forwho-title">No es para ti si</div></div>
         <ul class="forwho-list">
-          <li>Ya dominas programación, progresión y nutrición básica y buscas un plan avanzado.</li>
+          <li>Dominas progresión y nutrición básica y buscas un plan avanzado.</li>
           <li>Necesitas una dieta clínica personalizada.</li>
           <li>Buscas rehabilitación de una lesión.</li>
-          <li>Quieres preparación para competencia o culturismo avanzado.</li>
-          <li>Esperas una transformación garantizada en pocas semanas.</li>
+          <li>Buscas preparación para competir.</li>
+          <li>Esperas resultados garantizados en pocas semanas.</li>
         </ul>
       </div>
     </div>
@@ -951,23 +826,13 @@ const BODY = `
 
   <hr class="divider">
 
-  <!-- POR QUÉ CONFIAR -->
-  <section class="sec reveal">
-    <div class="section-label">Por qué confiar</div>
-    <h2 class="section-title">Sin credenciales inventadas.<br><span class="teal">Sin promesas inventadas.</span></h2>
-    <p class="section-intro">
-      Esencial Gym organiza principios básicos de entrenamiento y alimentación con lenguaje pensado para principiantes y referencias públicas.
-    </p>
-    <p class="note-text">
-      El material tiene fines educativos y no sustituye valoración médica, nutricional ni entrenamiento individual.
-    </p>
+  <!-- CREDIBILIDAD -->
+  <section class="sec credibility-strip reveal">
     <div class="badges">
       <span>Fuentes visibles</span>
       <span>Lenguaje para principiantes</span>
-      <span>Sin transformaciones garantizadas</span>
-      <span>Sin agenda de suplementos</span>
-      <span>Revisado y corregido antes de publicar</span>
-      <span>Probado con lectores principiantes</span>
+      <span>Sin resultados garantizados</span>
+      <span>Sin dietas personalizadas</span>
     </div>
     <a href="#referencias" class="link-teal">Ver referencias</a>
   </section>
@@ -976,18 +841,7 @@ const BODY = `
 
   <!-- PRUEBA SOCIAL -->
   <section class="sec reveal">
-    <div class="section-label">Lo que dicen quienes ya la probaron</div>
-    <h2 class="section-title">Claridad antes<br>que <span class="teal">humo</span></h2>
-    <p class="section-intro">
-      Personas que han probado versiones previas del material han destacado principalmente la claridad, la estructura y lo fácil que resulta entender qué hacer después.
-    </p>
-    <div class="rating-row">
-      <div class="rating-score">4.8</div>
-      <div>
-        <div class="stars">★★★★★</div>
-        <div class="rating-note">Promedio de lectores beta · sobre 5</div>
-      </div>
-    </div>
+    <div class="section-label">Testimonios</div>
     <div class="grid-3">
       <div class="t-card">
         <div class="t-stars">★★★★★</div>
@@ -1023,40 +877,6 @@ const BODY = `
 
   <hr class="divider">
 
-  <!-- FAQ -->
-  <section class="sec reveal">
-    <div class="section-label">Preguntas frecuentes</div>
-    <h2 class="section-title">Antes de <span class="teal">comprar</span></h2>
-    <div class="faq-list">
-      ${[
-        ['¿Necesito experiencia previa?', 'No. El producto está hecho para principiantes.'],
-        ['¿Tengo que entrenar 4 días?', 'No. El kit incluye una alternativa de 3 días.'],
-        [
-          '¿Necesito equipo específico?',
-          'Está pensado para un gimnasio comercial y se incluyen sustituciones para varios movimientos.',
-        ],
-        ['¿Es una dieta personalizada?', 'No. El contenido de alimentación es educativo y general.'],
-        [
-          '¿Sirve si tengo una lesión?',
-          'No está diseñado para diagnosticar, tratar ni rehabilitar lesiones. Consulta a un profesional.',
-        ],
-        ['¿Necesito ChatGPT?', 'No. Los prompts de IA son complementarios.'],
-        [
-          '¿En qué formato lo recibo?',
-          'Archivos digitales descargables (PDF) disponibles inmediatamente después de la compra.',
-        ],
-        [
-          '¿Esto garantiza resultados?',
-          'No. Los resultados dependen de múltiples factores. El objetivo del producto es darte una estructura clara y aplicable.',
-        ],
-      ]
-        .map(([q, a]) => `<details class="faq"><summary>${q}</summary><p>${a}</p></details>`)
-        .join('\n')}
-    </div>
-  </section>
-
-  <hr class="divider">
-
   <!-- PRECIO -->
   <section class="sec reveal" id="comprar" style="max-width:640px">
     <div class="section-label">Empieza con un plan</div>
@@ -1070,41 +890,52 @@ const BODY = `
       <div class="price-sub">Precio temporal de lanzamiento</div>
       <div class="includes">
         <div>Guía Esencial</div>
-        <div>Rutina principal</div>
-        <div>Registro</div>
-        <div>Progresión</div>
+        <div>Rutina de 4 días</div>
+        <div>Rutina de 3 días</div>
+        <div>Registro de 8 semanas</div>
+        <div>Progresión y sustituciones</div>
         <div>Alimentación básica</div>
         <div>FAQ</div>
-        <div>Recursos adicionales incluidos cuando estén disponibles</div>
       </div>
       <a href="${CHECKOUT_URL}" class="btn-full" target="_blank" rel="noopener">Quiero empezar ahora →</a>
-      <p class="price-foot">Sin suscripción.</p>
+      <p class="price-foot">Pago único · Acceso inmediato · Sin suscripción</p>
     </div>
   </section>
 
   <hr class="divider">
 
-  <!-- CTA FINAL -->
-  <section class="sec reveal final-cta">
-    <h2 class="section-title">Tu primera semana<br>no tiene que ser<br><span class="teal">una adivinanza.</span></h2>
-    <p class="section-intro">Empieza con una estructura clara y aprende a ajustarla conforme avanzas.</p>
-    <a href="${CHECKOUT_URL}" class="btn-primary" target="_blank" rel="noopener">Empezar con un plan <span class="arrow">→</span></a>
+  <hr class="divider">
+
+  <!-- FAQ -->
+  <section class="sec reveal">
+    <div class="section-label">Preguntas frecuentes</div>
+    <h2 class="section-title">Antes de <span class="teal">comprar</span></h2>
+    <div class="faq-list">
+      ${[
+        ['¿Necesito experiencia previa?', 'No. El producto está hecho para principiantes.'],
+        ['¿Tengo que entrenar 4 días?', 'No. El kit también incluye una rutina de 3 días.'],
+        ['¿Es una dieta personalizada?', 'No. El contenido de alimentación es educativo y general.'],
+        ['¿En qué formato lo recibo?', 'Archivos digitales descargables (PDF) disponibles inmediatamente después de la compra.'],
+        ['¿Esto garantiza resultados?', 'No. Los resultados dependen de múltiples factores. El producto te da una estructura clara y aplicable.'],
+      ]
+        .map(([q, a]) => `<details class="faq"><summary>${q}</summary><p>${a}</p></details>`)
+        .join('\n')}
+    </div>
   </section>
 
+  <hr class="divider">
+
   <!-- REFERENCIAS -->
-  <section class="sec reveal" id="referencias">
+  <section class="sec references-compact reveal" id="referencias">
     <div class="section-label">Referencias</div>
-    <h2 class="section-title">De dónde sale<br>lo que se afirma</h2>
-    <p class="section-intro">
-      El material se apoya en recomendaciones públicas y literatura básica de entrenamiento y nutrición general.
-    </p>
+    <p class="section-intro">Contenido educativo basado en recomendaciones públicas y literatura de entrenamiento y nutrición.</p>
     <ul class="refs-list">
-      <li>Recomendaciones de actividad física de la Organización Mundial de la Salud.</li>
-      <li>Guías de entrenamiento de fuerza del American College of Sports Medicine (ACSM).</li>
-      <li>Posicionamiento sobre proteína y composición corporal de la International Society of Sports Nutrition (ISSN).</li>
-      <li>Literatura general sobre sobrecarga progresiva y volumen de entrenamiento.</li>
+      <li>ACSM</li>
+      <li>OMS</li>
+      <li>ISSN</li>
+      <li>Literatura general sobre entrenamiento de fuerza</li>
     </ul>
-    <p class="note-text">Contenido educativo. No sustituye valoración médica, nutricional ni entrenamiento individual.</p>
+    <a href="#referencias" class="link-teal">Ver referencias completas</a>
   </section>
 
   <!-- FOOTER -->
