@@ -678,10 +678,6 @@ const BODY = `
         <p>Entrenas semanas sin una forma de medirlo.</p>
       </div>
     </div>
-    <p class="note-text">
-      Cuando eres principiante, tener más información no siempre ayuda.
-      <strong>Necesitas saber qué hacer hoy.</strong>
-    </p>
     <div class="highlight">
       Menos información.
       <span class="teal">Más dirección.</span>
@@ -901,8 +897,6 @@ const BODY = `
       <p class="price-foot">Pago único · Acceso inmediato · Sin suscripción</p>
     </div>
   </section>
-
-  <hr class="divider">
 
   <hr class="divider">
 
