@@ -2,9 +2,9 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 /* ── Variables fáciles de editar ───────────────────────────── */
-const PRICE = '129';
+const PRICE = '279';
 const CURRENCY = 'MXN';
-const CHECKOUT_URL = 'https://niwi.gumroad.com/l/guia-gym-principiantes';
+const CHECKOUT_URL = 'https://mpago.la/1B6G1mC';
 const CONTACT_EMAIL = 'hola@esencialgym.com';
 
 const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
