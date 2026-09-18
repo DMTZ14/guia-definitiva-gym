@@ -2,8 +2,10 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 /* ── Variables fáciles de editar ───────────────────────────── */
+const ORIGINAL_PRICE = '499';
 const PRICE = '279';
 const CURRENCY = 'MXN';
+const DISCOUNT_SAVINGS = '220';
 const CHECKOUT_URL = 'https://mpago.la/1B6G1mC';
 const CONTACT_EMAIL = 'hola@esencialgym.com';
 
@@ -62,10 +64,47 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
   .wrapper { position: relative; z-index: 1; padding-bottom: 76px; }
   @media (min-width: 760px) { .wrapper { padding-bottom: 0; } }
 
+  /* TOP BANNER */
+  .top-banner {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 110;
+    background: linear-gradient(90deg, #0a2e2a 0%, #0f766e 50%, #0a2e2a 100%);
+    color: var(--white);
+    padding: 7px 16px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(62,207,178,0.25);
+    flex-wrap: wrap;
+    line-height: 1.2;
+  }
+  .top-banner .badge-save {
+    background: var(--teal);
+    color: #000;
+    font-weight: 700;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .top-banner .timer-num {
+    font-family: var(--font-display);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: #fff;
+    background: rgba(0,0,0,0.4);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
   /* NAV */
   nav {
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: 34px; left: 0; right: 0;
     z-index: 100;
     padding: 12px 20px;
     display: flex;
@@ -75,6 +114,10 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     background: rgba(10,10,11,0.85);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
+  }
+  @media (max-width: 600px) {
+    .top-banner { font-size: 11px; padding: 6px 10px; gap: 6px; }
+    nav { top: 46px; }
   }
 
   .nav-logo {
@@ -158,11 +201,11 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
 
   /* HERO */
   .hero {
-    padding: 108px 20px 48px;
+    padding: 130px 20px 48px;
     max-width: 900px;
     margin: 0 auto;
   }
-  @media (min-width: 760px) { .hero { padding: 140px 24px 64px; } }
+  @media (min-width: 760px) { .hero { padding: 156px 24px 64px; } }
 
   .hero-eyebrow {
     display: inline-flex;
@@ -536,13 +579,86 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     background: var(--card);
     border: 1px solid var(--border2);
     border-radius: 12px;
-    padding: 26px 22px;
+    padding: 28px 22px;
     margin-top: 26px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
   }
-  .price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
-  .price-main { font-family: var(--font-display); font-size: 56px; line-height: 1; color: var(--white); }
+  .price-badge-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(62,207,178,0.12);
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .price-row { display: flex; align-items: baseline; gap: 14px; margin-bottom: 4px; }
+  .price-old { font-family: var(--font-display); font-size: 28px; line-height: 1; color: var(--gray2); text-decoration: line-through; }
+  .price-main { font-family: var(--font-display); font-size: 58px; line-height: 1; color: var(--white); }
   .price-cur { font-size: 13px; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; }
-  .price-sub { font-size: 13px; color: var(--teal); margin-bottom: 20px; }
+  .price-sub { font-size: 13px; color: var(--teal); margin-bottom: 18px; font-weight: 500; }
+
+  .timer-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 22px;
+    text-align: center;
+  }
+  .timer-card-title {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .timer-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+  .timer-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+  }
+  .timer-unit span:last-child {
+    font-size: 9px;
+    font-family: var(--font-body);
+    color: var(--gray2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 3px;
+  }
+
+  .guarantee-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--gray);
+    text-align: left;
+    line-height: 1.4;
+  }
 
   .includes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
   .includes div { display: flex; gap: 10px; font-size: 13px; color: var(--gray); align-items: flex-start; line-height: 1.5; }
@@ -613,6 +729,12 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
 `;
 
 const BODY = `
+<div class="top-banner">
+  <span class="badge-save">OFERTA DE HOY</span>
+  <span>Precio especial de lanzamiento: <strong><del>$${ORIGINAL_PRICE}</del> $${PRICE} ${CURRENCY}</strong> (Ahorras $${DISCOUNT_SAVINGS})</span>
+  <span class="timer-tag">⏰ Finaliza en: <strong id="top-timer" class="timer-num">00:00:00</strong></span>
+</div>
+
 <nav>
   <div>
     <div class="nav-logo">Esencial Gym</div>
@@ -641,7 +763,9 @@ const BODY = `
       <a href="${CHECKOUT_URL}" class="btn-primary" target="_blank" rel="noopener">
         Quiero empezar con un plan <span class="arrow">→</span>
       </a>
-      <span class="price-note">Pago único · Acceso inmediato</span>
+      <span class="price-note">
+        <strong style="color:var(--teal);">$${PRICE} ${CURRENCY}</strong> · <del style="color:var(--gray2);">$${ORIGINAL_PRICE}</del> (Ahorras $${DISCOUNT_SAVINGS}) · Acceso inmediato
+      </span>
     </div>
     <div class="trust-mini">
       <span>Para principiantes</span>
@@ -877,24 +1001,45 @@ const BODY = `
   <section class="sec reveal" id="comprar" style="max-width:640px">
     <div class="section-label">Empieza con un plan</div>
     <h2 class="section-title">Kit <span class="teal">esencial</span></h2>
-    <p class="section-intro">Pago único · acceso inmediato</p>
+    <p class="section-intro">Pago único · acceso inmediato · para consultar desde tu celular</p>
     <div class="price-box">
+      <div class="price-badge-save">Ahorras $${DISCOUNT_SAVINGS} ${CURRENCY} (44% OFF) · Precio de lanzamiento</div>
       <div class="price-row">
+        <div class="price-old"><del>$${ORIGINAL_PRICE}</del></div>
         <div class="price-main">$${PRICE}</div>
         <div class="price-cur">${CURRENCY}</div>
       </div>
-      <div class="price-sub">Precio temporal de lanzamiento</div>
-      <div class="includes">
-        <div>Guía Esencial</div>
-        <div>Rutina de 4 días</div>
-        <div>Rutina de 3 días</div>
-        <div>Registro de 8 semanas</div>
-        <div>Progresión y sustituciones</div>
-        <div>Alimentación básica</div>
-        <div>FAQ</div>
+      <div class="price-sub">🔥 Precio especial de lanzamiento garantizado hoy</div>
+
+      <!-- TEMPORIZADOR DE URGENCIA EVERGREEN -->
+      <div class="timer-card">
+        <div class="timer-card-title">La oferta especial con descuento de hoy termina en:</div>
+        <div class="timer-clock">
+          <div class="timer-unit"><span id="timer-h">00</span><span>Horas</span></div>
+          <div>:</div>
+          <div class="timer-unit"><span id="timer-m">00</span><span>Minutos</span></div>
+          <div>:</div>
+          <div class="timer-unit"><span id="timer-s">00</span><span>Segundos</span></div>
+        </div>
       </div>
-      <a href="${CHECKOUT_URL}" class="btn-full" target="_blank" rel="noopener">Quiero empezar ahora →</a>
-      <p class="price-foot">Pago único · Acceso inmediato · Sin suscripción</p>
+
+      <div class="includes">
+        <div><strong>Guía Esencial</strong> (Compendio teórico maestro de 50 páginas)</div>
+        <div><strong>Rutina Principal de 3 días</strong> (Push - Pull - Legs · 5 ejercicios)</div>
+        <div><strong>Rutina Opcional de 4 días</strong> (Torso / Pierna · 5 ejercicios)</div>
+        <div><strong>Registro de 8 semanas</strong> (Cuaderno completo de seguimiento vertical)</div>
+        <div><strong>Sustituciones y Técnica</strong> (18 ejercicios con 3 claves y videos en 1 clic)</div>
+        <div><strong>Dudas y Alimentación mexicana</strong> (Sin dietas complejas ni suplementos caros)</div>
+        <div><strong>Conceptos y Glosario RIR</strong> (Esfuerzo, sobrecarga progresiva y descanso)</div>
+        <div><strong>Plantilla para Notas del celular</strong> (Texto plano listo para copiar y pegar)</div>
+        <div style="color: var(--teal); font-weight: 600;">⭐ <strong>BONUS: Entrenador de Bolsillo con IA</strong> (8 asistentes listos para resolver dudas en vivo)</div>
+      </div>
+      <a href="${CHECKOUT_URL}" class="btn-full" target="_blank" rel="noopener">Quiero empezar ahora por $${PRICE} ${CURRENCY} →</a>
+      <div class="guarantee-badge">
+        <span style="font-size: 20px;">🛡️</span>
+        <div><strong>Garantía de 30 días:</strong> Si el kit no te da orden y claridad total en el gimnasio, te devolvemos el 100% de tu dinero sin preguntas.</div>
+      </div>
+      <p class="price-foot">Pago único · Acceso inmediato vía Google Drive · Sin suscripciones</p>
     </div>
   </section>
 
@@ -953,8 +1098,8 @@ const BODY = `
 
 <div class="sticky-cta">
   <div>
-    <div class="s-price">$${PRICE} ${CURRENCY}</div>
-    <div class="s-note">Pago único</div>
+    <div class="s-price">$${PRICE} ${CURRENCY} <span style="font-size: 13px; text-decoration: line-through; color: var(--gray2); margin-left: 4px;">$${ORIGINAL_PRICE}</span></div>
+    <div class="s-note">Ahorras $${DISCOUNT_SAVINGS} · Pago único</div>
   </div>
   <a href="${CHECKOUT_URL}" target="_blank" rel="noopener">Empezar ahora →</a>
 </div>
@@ -967,6 +1112,37 @@ const SCRIPT = `  const reveals = document.querySelectorAll('.reveal');
     });
   }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
   reveals.forEach(el => observer.observe(el));
+
+  function updateCountdown() {
+    const now = new Date();
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+    let diff = Math.floor((midnight.getTime() - now.getTime()) / 1000);
+    if (diff < 0) diff = 0;
+
+    const hours = Math.floor(diff / 3600);
+    const minutes = Math.floor((diff % 3600) / 60);
+    const seconds = diff % 60;
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const h = pad(hours);
+    const m = pad(minutes);
+    const s = pad(seconds);
+
+    const topEl = document.getElementById('top-timer');
+    if (topEl) topEl.textContent = \`\${h}:\${m}:\${s}\`;
+
+    const th = document.getElementById('timer-h');
+    const tm = document.getElementById('timer-m');
+    const ts = document.getElementById('timer-s');
+    if (th && tm && ts) {
+      th.textContent = h;
+      tm.textContent = m;
+      ts.textContent = s;
+    }
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 `;
 
 export const Route = createFileRoute('/')({
