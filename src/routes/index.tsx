@@ -64,60 +64,82 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
   .wrapper { position: relative; z-index: 1; padding-bottom: 76px; }
   @media (min-width: 760px) { .wrapper { padding-bottom: 0; } }
 
-  /* TOP BANNER */
-  .top-banner {
+  /* SITE HEADER CONTAINER (Zero Overlap) */
+  .site-header {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 110;
-    background: linear-gradient(90deg, #0a2e2a 0%, #0f766e 50%, #0a2e2a 100%);
+    z-index: 100;
+    background: var(--black);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  /* TOP BANNER */
+  .top-banner {
+    background: linear-gradient(90deg, #180505 0%, #2a0808 50%, #180505 100%);
     color: var(--white);
-    padding: 7px 16px;
-    font-size: 12px;
+    padding: 8px 16px;
+    border-bottom: 1px solid rgba(239, 68, 68, 0.4);
+  }
+  .banner-content {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    border-bottom: 1px solid rgba(62,207,178,0.25);
     flex-wrap: wrap;
-    line-height: 1.2;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.3;
   }
   .top-banner .badge-save {
-    background: var(--teal);
-    color: #000;
-    font-weight: 700;
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .top-banner .timer-num {
-    font-family: var(--font-display);
-    font-size: 15px;
-    letter-spacing: 0.06em;
+    background: #ef4444;
     color: #fff;
-    background: rgba(0,0,0,0.4);
+    font-weight: 800;
+    font-size: 10px;
     padding: 2px 8px;
     border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .banner-text {
+    color: #fecaca;
+    font-weight: 400;
+  }
+  .banner-text strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+  .banner-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #fca5a5;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .timer-red-pill {
+    font-family: var(--font-display);
+    font-size: 19px;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    background: #dc2626;
+    padding: 2px 10px;
+    border-radius: 5px;
+    border: 1px solid #ef4444;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+    display: inline-block;
+    line-height: 1.1;
   }
 
   /* NAV */
   nav {
-    position: fixed;
-    top: 34px; left: 0; right: 0;
-    z-index: 100;
-    padding: 12px 20px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    background: rgba(10,10,11,0.85);
+    background: rgba(10,10,11,0.95);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
-  }
-  @media (max-width: 600px) {
-    .top-banner { font-size: 11px; padding: 6px 10px; gap: 6px; }
-    nav { top: 46px; }
   }
 
   .nav-logo {
@@ -606,19 +628,21 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
   .price-sub { font-size: 13px; color: var(--teal); margin-bottom: 18px; font-weight: 500; }
 
   .timer-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    padding: 12px 14px;
+    background: rgba(220, 38, 38, 0.08);
+    border: 2px solid rgba(239, 68, 68, 0.45);
+    border-radius: 10px;
+    padding: 16px 14px;
     margin-bottom: 22px;
     text-align: center;
+    box-shadow: 0 0 24px rgba(220, 38, 38, 0.18);
   }
   .timer-card-title {
     font-size: 11px;
-    color: var(--gray);
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
+    color: #f87171;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
     text-transform: uppercase;
+    font-weight: 700;
   }
   .timer-clock {
     display: flex;
@@ -626,38 +650,40 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
     align-items: center;
     gap: 8px;
     font-family: var(--font-display);
-    font-size: 26px;
-    color: var(--white);
-    letter-spacing: 0.05em;
   }
   .timer-unit {
     display: flex;
     flex-direction: column;
     align-items: center;
     line-height: 1;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    min-width: 62px;
+  }
+  .timer-unit span:first-child {
+    font-size: 38px;
+    color: #ffffff;
+    font-family: var(--font-display);
+    letter-spacing: 0.04em;
+    line-height: 1;
   }
   .timer-unit span:last-child {
     font-size: 9px;
     font-family: var(--font-body);
-    color: var(--gray2);
+    color: #fca5a5;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-top: 3px;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+    font-weight: 600;
   }
-
-  .guarantee-badge {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 14px;
-    margin-top: 16px;
-    font-size: 12px;
-    color: var(--gray);
-    text-align: left;
-    line-height: 1.4;
+  .timer-sep {
+    font-family: var(--font-display);
+    font-size: 30px;
+    color: #ef4444;
+    font-weight: 700;
+    margin-top: -12px;
   }
 
   .includes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
@@ -729,19 +755,25 @@ const STYLES = `  *, *::before, *::after { box-sizing: border-box; margin: 0; pa
 `;
 
 const BODY = `
-<div class="top-banner">
-  <span class="badge-save">OFERTA DE HOY</span>
-  <span>Precio especial de lanzamiento: <strong><del>$${ORIGINAL_PRICE}</del> $${PRICE} ${CURRENCY}</strong> (Ahorras $${DISCOUNT_SAVINGS})</span>
-  <span class="timer-tag">⏰ Finaliza en: <strong id="top-timer" class="timer-num">00:00:00</strong></span>
-</div>
-
-<nav>
-  <div>
-    <div class="nav-logo">Esencial Gym</div>
-    <div class="nav-tag">Menos ruido. Más claridad.</div>
+<header class="site-header">
+  <div class="top-banner">
+    <div class="banner-content">
+      <span class="badge-save">OFERTA DE HOY</span>
+      <span class="banner-text">Lanzamiento: <strong><del>$${ORIGINAL_PRICE}</del> $${PRICE} ${CURRENCY}</strong> (Ahorras $${DISCOUNT_SAVINGS})</span>
+      <div class="banner-timer">
+        <span>⏰ Termina en:</span>
+        <strong id="top-timer" class="timer-red-pill">00:00:00</strong>
+      </div>
+    </div>
   </div>
-  <a href="${CHECKOUT_URL}" class="nav-cta" target="_blank" rel="noopener">Empezar ahora <span>$${PRICE}</span></a>
-</nav>
+  <nav>
+    <div>
+      <div class="nav-logo">Esencial Gym</div>
+      <div class="nav-tag">Menos ruido. Más claridad.</div>
+    </div>
+    <a href="${CHECKOUT_URL}" class="nav-cta" target="_blank" rel="noopener">Empezar ahora <span>$${PRICE}</span></a>
+  </nav>
+</header>
 
 <div class="wrapper">
 
@@ -1011,14 +1043,14 @@ const BODY = `
       </div>
       <div class="price-sub">🔥 Precio especial de lanzamiento garantizado hoy</div>
 
-      <!-- TEMPORIZADOR DE URGENCIA EVERGREEN -->
+      <!-- TEMPORIZADOR DE URGENCIA EVERGREEN (ROJO E INVASIVO) -->
       <div class="timer-card">
-        <div class="timer-card-title">La oferta especial con descuento de hoy termina en:</div>
+        <div class="timer-card-title">🚨 OFERTA ESPECIAL · EL PRECIO SUBE EN:</div>
         <div class="timer-clock">
           <div class="timer-unit"><span id="timer-h">00</span><span>Horas</span></div>
-          <div>:</div>
+          <div class="timer-sep">:</div>
           <div class="timer-unit"><span id="timer-m">00</span><span>Minutos</span></div>
-          <div>:</div>
+          <div class="timer-sep">:</div>
           <div class="timer-unit"><span id="timer-s">00</span><span>Segundos</span></div>
         </div>
       </div>
@@ -1035,10 +1067,6 @@ const BODY = `
         <div style="color: var(--teal); font-weight: 600;">⭐ <strong>BONUS: Entrenador de Bolsillo con IA</strong> (8 asistentes listos para resolver dudas en vivo)</div>
       </div>
       <a href="${CHECKOUT_URL}" class="btn-full" target="_blank" rel="noopener">Quiero empezar ahora por $${PRICE} ${CURRENCY} →</a>
-      <div class="guarantee-badge">
-        <span style="font-size: 20px;">🛡️</span>
-        <div><strong>Garantía de 30 días:</strong> Si el kit no te da orden y claridad total en el gimnasio, te devolvemos el 100% de tu dinero sin preguntas.</div>
-      </div>
       <p class="price-foot">Pago único · Acceso inmediato vía Google Drive · Sin suscripciones</p>
     </div>
   </section>
