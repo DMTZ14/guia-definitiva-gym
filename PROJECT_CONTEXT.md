@@ -18,7 +18,10 @@ Landing page de conversión (mobile-first) para **Kit Esencial Gym: La Guía Def
 - **Ruta opcional incluida**: 4 días por semana, esquema **Torso–Pierna**, 5 ejercicios por sesión.
 - **Mensaje rector**: *"Empieza con tres días por semana. Incluye una alternativa de cuatro días."*
 
-## 4. Pendientes que Requieren Confirmación del Propietario (Niwi)
+## 4. Analítica y Seguimiento
+- **Google Analytics 4 (gtag.js)**: Integrado en el `<head>` de `src/routes/__root.tsx` con el ID de medición `G-NDBNXKSZ7N`.
+
+## 5. Pendientes que Requieren Confirmación del Propietario (Niwi)
 1. **Correo de soporte activo**: Actualmente se muestra `hola@esencialgym.com`, pero el dominio `esencialgym.com` no tiene registros MX ni está registrado (`NXDOMAIN`). Se requiere confirmar un correo operativo real o configurar el dominio antes de escalar tráfico.
 2. **Datos comerciales / titularidad en `#condiciones`**: Confirmar nombre comercial o titular legal del vendedor y plazo máximo de respuesta de soporte por correo.
-3. **Analítica (Etapa 2)**: Configuración de GA4 y Meta Pixel pospuesta por decisión confirmada para una segunda etapa.
+3. **Meta Pixel (Etapa 2)**: Pendiente ID o snippet de Meta Pixel si se decide correr pauta en Instagram/Facebook.
