@@ -2235,6 +2235,16 @@ const SCRIPT = `
           button_location: location
         });
       }
+
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'InitiateCheckout', {
+          button_location: location
+        });
+        window.fbq('trackCustom', 'checkout_click', {
+          link_url: linkUrl,
+          button_location: location
+        });
+      }
     });
   });
 })();

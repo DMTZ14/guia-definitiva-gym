@@ -20,6 +20,7 @@ Landing page de conversión (mobile-first) para **Kit Esencial Gym: La Guía Def
 
 ## 4. Analítica y Seguimiento
 - **Google Analytics 4 (gtag.js)**: Integrado en el `<head>` de `src/routes/__root.tsx` con el ID de medición `G-NDBNXKSZ7N`.
+- **Meta Pixel**: Integrado en el `<head>` de `src/routes/__root.tsx` con el ID `1106786125669865` (`PageView` en todas las páginas e `InitiateCheckout` / `checkout_click` al pulsar cualquier enlace a Mercado Pago).
 - **Evento `checkout_click`**: Registrado en `src/routes/index.tsx` para todos los enlaces hacia `https://mpago.la/1B6G1mC` sin alterar la navegación nativa:
   - Parámetros: `link_url` (`https://mpago.la/1B6G1mC`), `button_location` (`cabecera`, `hero`, `resumen_compra`, `barra_movil`).
   - Control de duplicados: Bandera `data-checkout-tracked` en cada nodo para garantizar envío único por clic.
@@ -29,4 +30,3 @@ Landing page de conversión (mobile-first) para **Kit Esencial Gym: La Guía Def
 ## 5. Pendientes que Requieren Confirmación del Propietario (Niwi)
 1. **Correo de soporte activo**: Actualmente se muestra `hola@esencialgym.com`, pero el dominio `esencialgym.com` no tiene registros MX ni está registrado (`NXDOMAIN`). Se requiere confirmar un correo operativo real o configurar el dominio antes de escalar tráfico.
 2. **Datos comerciales / titularidad en `#condiciones`**: Confirmar nombre comercial o titular legal del vendedor y plazo máximo de respuesta de soporte por correo.
-3. **Meta Pixel (Etapa 2)**: Pendiente ID o snippet de Meta Pixel si se decide correr pauta en Instagram/Facebook.
