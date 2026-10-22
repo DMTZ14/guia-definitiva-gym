@@ -7,7 +7,7 @@ const PRICE = '279';
 const CURRENCY = 'MXN';
 const DISCOUNT_SAVINGS = '220';
 const CHECKOUT_URL = 'https://mpago.la/1B6G1mC';
-const CONTACT_EMAIL = 'hola@esencialgym.com';
+const CONTACT_EMAIL = 'guiagym14@gmail.com';
 
 const STYLES = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

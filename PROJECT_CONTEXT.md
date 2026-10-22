@@ -27,6 +27,7 @@ Landing page de conversión (mobile-first) para **Kit Esencial Gym: La Guía Def
   - Privacidad: Sin parámetros de ingresos, compras ni datos personales; compatible con Google Consent Mode.
   - Regla GA4: No crear eventos sintéticos `checkout_click` derivados del evento automático `click` en la consola de GA4 para evitar duplicidad.
 
+- **Correo oficial de soporte**: `guiagym14@gmail.com` (enlaces mailto en `#condiciones` y pie de página).
+
 ## 5. Pendientes que Requieren Confirmación del Propietario (Niwi)
-1. **Correo de soporte activo**: Actualmente se muestra `hola@esencialgym.com`, pero el dominio `esencialgym.com` no tiene registros MX ni está registrado (`NXDOMAIN`). Se requiere confirmar un correo operativo real o configurar el dominio antes de escalar tráfico.
-2. **Datos comerciales / titularidad en `#condiciones`**: Confirmar nombre comercial o titular legal del vendedor y plazo máximo de respuesta de soporte por correo.
+1. **Datos comerciales / titularidad en `#condiciones`**: Confirmar nombre comercial o titular legal del vendedor y plazo máximo de respuesta de soporte por correo.
