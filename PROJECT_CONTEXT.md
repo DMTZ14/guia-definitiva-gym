@@ -20,6 +20,11 @@ Landing page de conversión (mobile-first) para **Kit Esencial Gym: La Guía Def
 
 ## 4. Analítica y Seguimiento
 - **Google Analytics 4 (gtag.js)**: Integrado en el `<head>` de `src/routes/__root.tsx` con el ID de medición `G-NDBNXKSZ7N`.
+- **Evento `checkout_click`**: Registrado en `src/routes/index.tsx` para todos los enlaces hacia `https://mpago.la/1B6G1mC` sin alterar la navegación nativa:
+  - Parámetros: `link_url` (`https://mpago.la/1B6G1mC`), `button_location` (`cabecera`, `hero`, `resumen_compra`, `barra_movil`).
+  - Control de duplicados: Bandera `data-checkout-tracked` en cada nodo para garantizar envío único por clic.
+  - Privacidad: Sin parámetros de ingresos, compras ni datos personales; compatible con Google Consent Mode.
+  - Regla GA4: No crear eventos sintéticos `checkout_click` derivados del evento automático `click` en la consola de GA4 para evitar duplicidad.
 
 ## 5. Pendientes que Requieren Confirmación del Propietario (Niwi)
 1. **Correo de soporte activo**: Actualmente se muestra `hola@esencialgym.com`, pero el dominio `esencialgym.com` no tiene registros MX ni está registrado (`NXDOMAIN`). Se requiere confirmar un correo operativo real o configurar el dominio antes de escalar tráfico.

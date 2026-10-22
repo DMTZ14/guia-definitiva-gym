@@ -1412,7 +1412,7 @@ const BODY = `
       <button type="button" id="mobile-menu-btn" class="nav-menu-btn" aria-expanded="false" aria-controls="mobile-nav-menu">
         ☰ Menú
       </button>
-      <a href="${CHECKOUT_URL}" class="nav-cta" target="_blank" rel="noopener noreferrer">
+      <a href="${CHECKOUT_URL}" class="nav-cta" target="_blank" rel="noopener noreferrer" data-checkout-location="cabecera">
         Comprar <span>$${PRICE}</span>
       </a>
     </div>
@@ -1446,7 +1446,7 @@ const BODY = `
           <strong>Empieza con tres días por semana.</strong> Incluye una alternativa de cuatro días.
         </div>
         <div class="hero-cta-group">
-          <a href="${CHECKOUT_URL}" class="btn-primary" target="_blank" rel="noopener noreferrer">
+          <a href="${CHECKOUT_URL}" class="btn-primary" target="_blank" rel="noopener noreferrer" data-checkout-location="hero">
             Quiero empezar con un plan <span>→</span>
           </a>
           <span class="price-note">
@@ -1861,7 +1861,7 @@ const BODY = `
         <div class="bonus-line"><span><strong>BONUS INCLUIDO · Entrenador de bolsillo con IA:</strong> 8 asistentes listos para copiar y resolver dudas desde tu celular.</span></div>
       </div>
 
-      <a href="${CHECKOUT_URL}" class="btn-full" target="_blank" rel="noopener noreferrer">
+      <a href="${CHECKOUT_URL}" class="btn-full" target="_blank" rel="noopener noreferrer" data-checkout-location="resumen_compra">
         Quiero empezar ahora por $${PRICE} ${CURRENCY} →
       </a>
       <p class="price-foot">
@@ -1987,7 +1987,7 @@ const BODY = `
     </div>
     <div class="s-note">Empieza con 3 días · Incluye ruta de 4 días</div>
   </div>
-  <a href="${CHECKOUT_URL}" target="_blank" rel="noopener noreferrer">
+  <a href="${CHECKOUT_URL}" target="_blank" rel="noopener noreferrer" data-checkout-location="barra_movil">
     Empezar ahora →
   </a>
 </div>
@@ -2210,6 +2210,32 @@ const SCRIPT = `
     if (e.key === 'Escape' && modal && modal.classList.contains('open')) {
       closeModal();
     }
+  });
+
+  /* 4. Medición GA4: Evento checkout_click */
+  var checkoutLinks = document.querySelectorAll('a[href*="mpago.la/1B6G1mC"]');
+  checkoutLinks.forEach(function (link) {
+    if (link.dataset.checkoutTracked === 'true') return;
+    link.dataset.checkoutTracked = 'true';
+
+    link.addEventListener('click', function () {
+      var linkUrl = link.href || 'https://mpago.la/1B6G1mC';
+      var location = link.getAttribute('data-checkout-location') || 'desconocido';
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'checkout_click', {
+          link_url: linkUrl,
+          button_location: location,
+          send_to: 'G-NDBNXKSZ7N'
+        });
+      } else if (Array.isArray(window.dataLayer)) {
+        window.dataLayer.push({
+          event: 'checkout_click',
+          link_url: linkUrl,
+          button_location: location
+        });
+      }
+    });
   });
 })();
 `;
